@@ -1,0 +1,109 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+msgid ""
+"<a target=\"_blank\" href=\"https://github.com/liudf0716/xkcptun\">Xkcptun</"
+"a> is a kcp tunnel for OpenWRT, implemented in c language"
+msgstr ""
+
+msgid "<b style=\"color:red\">Xkcptun not installed.</b>"
+msgstr ""
+
+msgid "Advanced Setting"
+msgstr ""
+
+msgid "Client Configuration"
+msgstr ""
+
+msgid "DSCP(6bit)"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid "Enable accelerator"
+msgstr ""
+
+msgid "General Setting"
+msgstr ""
+
+msgid "Local Interface"
+msgstr ""
+
+msgid "Local Port"
+msgstr ""
+
+msgid "Local listening port"
+msgstr ""
+
+msgid "MTU"
+msgstr ""
+
+msgid "Server IP"
+msgstr ""
+
+msgid "Server Port"
+msgstr ""
+
+msgid "Session Key"
+msgstr ""
+
+msgid "Session key for connecting to server"
+msgstr ""
+
+msgid "Specify the listening network interface, default is 'br-lan'"
+msgstr ""
+
+msgid "Xkcptun"
+msgstr ""
+
+msgid "Xkcptun server ip address"
+msgstr ""
+
+msgid "Xkcptun server port"
+msgstr ""
+
+msgid "acknodelay"
+msgstr ""
+
+msgid "datashard"
+msgstr ""
+
+msgid "disable compression"
+msgstr ""
+
+msgid "dscp"
+msgstr ""
+
+msgid "maximum transmission unit for UDP packets"
+msgstr ""
+
+msgid "nocomp"
+msgstr ""
+
+msgid "nodelay"
+msgstr ""
+
+msgid "parityshard"
+msgstr ""
+
+msgid "rcvwnd"
+msgstr ""
+
+msgid "receive window size(num of packets)"
+msgstr ""
+
+msgid "reed-solomon erasure coding"
+msgstr ""
+
+msgid "send window size(num of packets)"
+msgstr ""
+
+msgid "set ack no delay"
+msgstr ""
+
+msgid "set all conn no delay"
+msgstr ""
+
+msgid "sndwnd"
+msgstr ""

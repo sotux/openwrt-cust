@@ -1,0 +1,176 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+msgid "%u seconds"
+msgstr ""
+
+msgid "Access Control"
+msgstr ""
+
+msgid "Alias"
+msgstr ""
+
+msgid "Alias(optional)"
+msgstr ""
+
+msgid "Bypassed IP"
+msgstr ""
+
+msgid "Bypassed IP List"
+msgstr ""
+
+msgid "ChinaDNS CHNRoute"
+msgstr ""
+
+msgid "Connection Timeout"
+msgstr ""
+
+msgid "Destination"
+msgstr ""
+
+msgid "Direct"
+msgstr ""
+
+msgid "Directly Key"
+msgstr ""
+
+msgid "Disable"
+msgstr ""
+
+msgid "Edit Server"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid "Encrypt Method"
+msgstr ""
+
+msgid "Extra arguments"
+msgstr ""
+
+msgid "Forwarded IP"
+msgstr ""
+
+msgid "Forwarded IP List"
+msgstr ""
+
+msgid "General Settings"
+msgstr ""
+
+msgid "Global"
+msgstr ""
+
+msgid "Global Settings"
+msgstr ""
+
+msgid "Host"
+msgstr ""
+
+msgid "Interface"
+msgstr ""
+
+msgid "LAN Hosts"
+msgstr ""
+
+msgid "Local Port"
+msgstr ""
+
+msgid "Main Server"
+msgstr ""
+
+msgid "NOT RUNNING"
+msgstr ""
+
+msgid "NULL - As Global Proxy"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Normal"
+msgstr ""
+
+msgid "Not enabled"
+msgstr ""
+
+msgid "Override MTU"
+msgstr ""
+
+msgid "Passes additional arguments to iptables. Use with care!"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid "Plugin Arguments"
+msgstr ""
+
+msgid "Plugin Name"
+msgstr ""
+
+msgid "Port Forward"
+msgstr ""
+
+msgid "Proxy Type"
+msgstr ""
+
+msgid "Proxy port numbers %s only"
+msgstr ""
+
+msgid "RUNNING"
+msgstr ""
+
+msgid "Running Status"
+msgstr ""
+
+msgid "SOCKS5 Proxy"
+msgstr ""
+
+msgid "Same as Main Server"
+msgstr ""
+
+msgid "Self Proxy"
+msgstr ""
+
+msgid "Server"
+msgstr ""
+
+msgid "Server Address"
+msgstr ""
+
+msgid "Server Port"
+msgstr ""
+
+msgid "Servers Manage"
+msgstr ""
+
+msgid "ShadowSocks"
+msgstr ""
+
+msgid "Startup Delay"
+msgstr ""
+
+msgid "TCP Fast Open"
+msgstr ""
+
+msgid "TCP no-delay"
+msgstr ""
+
+msgid "Transparent Proxy"
+msgstr ""
+
+msgid "UDP-Relay Server"
+msgstr ""
+
+msgid "Unusable - Missing iptables-mod-tproxy or ip"
+msgstr ""
+
+msgid "Zone LAN"
+msgstr ""
+
+msgid "Zone WAN"
+msgstr ""
