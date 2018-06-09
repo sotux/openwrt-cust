@@ -1,7 +1,7 @@
 #!/bin/sh /etc/rc.common
 #
-# Copyright (C) 2015 OpenWrt-dist
-# Copyright (C) 2015 Jian Chang <aa65535@live.com>
+# Copyright (C) 2014-2018 OpenWrt-dist
+# Copyright (C) 2014-2018 Jian Chang <aa65535@live.com>
 #
 # This is free software, licensed under the GNU General Public License v3.
 # See /LICENSE for more information.
@@ -42,6 +42,7 @@ start_instance() {
 	procd_set_param respawn
 	procd_set_param stderr 1
 	procd_set_param command /usr/bin/chinadns -m
+	append_parm $1 addr "-b"
 	append_parm $1 port "-p"
 	append_parm $1 server "-s"
 	append_parm $1 chnroute "-c"

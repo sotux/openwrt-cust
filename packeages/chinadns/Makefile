@@ -1,6 +1,6 @@
 #
-# Copyright (C) 2015 OpenWrt-dist
-# Copyright (C) 2015 Jian Chang <aa65535@live.com>
+# Copyright (C) 2014-2018 OpenWrt-dist
+# Copyright (C) 2014-2018 Jian Chang <aa65535@live.com>
 #
 # This is free software, licensed under the GNU General Public License v3.
 # See /LICENSE for more information.
@@ -10,17 +10,19 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ChinaDNS
 PKG_VERSION:=1.3.2
-PKG_RELEASE:=6
+PKG_RELEASE:=8
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://github.com/aa65535/openwrt-chinadns/releases/download/v$(PKG_VERSION)
-PKG_MD5SUM:=c529ac231aed4e5874251639f77e92de
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_URL:=https://github.com/aa65535/ChinaDNS.git
+PKG_SOURCE_VERSION:=5ed537bd24b7fd53540799f9ab4cf56f749c3245
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION)
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.xz
 
 PKG_LICENSE:=GPLv3
 PKG_LICENSE_FILES:=LICENSE
 PKG_MAINTAINER:=Jian Chang <aa65535@live.com>
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)/$(PKG_NAME)-$(PKG_VERSION)
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)/$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION)
 
 PKG_INSTALL:=1
 PKG_FIXUP:=autoreconf
