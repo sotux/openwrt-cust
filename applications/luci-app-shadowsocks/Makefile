@@ -7,7 +7,7 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI Support for shadowsocks
-LUCI_DEPENDS:=+ipset +iptables-mod-tproxy +shadowsocks-libev-ss-local +shadowsocks-libev-ss-redir +shadowsocks-libev-ss-tunnel
+LUCI_DEPENDS:=+ipset +iptables-mod-tproxy +shadowsocks-libev
 LUCI_PKGARCH:=all
 
 PKG_LICENSE:=Apache-2.0
