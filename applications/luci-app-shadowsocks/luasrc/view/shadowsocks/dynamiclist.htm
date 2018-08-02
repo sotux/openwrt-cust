@@ -74,12 +74,12 @@
 					sel.appendChild(opt);
 				}
 
-				var btn = document.createElement('img');
-				btn.src = "<%=resource%>" + ((i + 1) < values.length ? "/cbi/remove.gif" : "/cbi/add.gif");
+				var btn = E('div', {
+					class: 'cbi-button cbi-button-' + ((i+1) < values.length ? 'remove' : 'add')
+				}, (i+1) < values.length ? '×' : '+');
 				btn.index = i;
-				btn.className = 'cbi-image-button';
 				btn.onclick = function() {
-					if (this.src.indexOf('remove') > -1) {
+					if (this.classList.contains('cbi-button-remove')) {
 						values.splice(this.index, 1);
 					} else {
 						values.push("<%=self.default%>");
