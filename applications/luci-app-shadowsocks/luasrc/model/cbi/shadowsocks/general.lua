@@ -147,7 +147,7 @@ if has_tunnel then
 
 	o = s:option(Value, "local_port", translate("Local Port"))
 	o.datatype = "port"
-	o.default = 5300
+	o.default = 5353
 	o.rmempty = false
 
 	o = s:option(Value, "destination", translate("Destination"))

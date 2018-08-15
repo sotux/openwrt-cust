@@ -25,6 +25,9 @@ msgstr ""
 msgid "Connection Timeout"
 msgstr ""
 
+msgid "DNS for unblocked sites"
+msgstr ""
+
 msgid "Destination"
 msgstr ""
 
@@ -35,6 +38,9 @@ msgid "Directly Key"
 msgstr ""
 
 msgid "Disable"
+msgstr ""
+
+msgid "Download URL of GFWList file"
 msgstr ""
 
 msgid "Edit Server"
@@ -53,6 +59,9 @@ msgid "Forwarded IP"
 msgstr ""
 
 msgid "Forwarded IP List"
+msgstr ""
+
+msgid "GFWList Mode"
 msgstr ""
 
 msgid "General Settings"
@@ -131,6 +140,9 @@ msgid "SOCKS5 Proxy"
 msgstr ""
 
 msgid "Same as Main Server"
+msgstr ""
+
+msgid "Save GFWList file in ram only"
 msgstr ""
 
 msgid "Self Proxy"

@@ -47,12 +47,30 @@ m = Map(shadowsocks, "%s - %s" %{translate("ShadowSocks"), translate("Access Con
 s = m:section(TypedSection, "access_control", translate("Zone WAN"))
 s.anonymous = true
 
-o = s:option(Value, "wan_bp_list", translate("Bypassed IP List"))
+o = s:option(ListValue, "wan_bp_list", translate("Bypassed IP List"))
 o:value("/dev/null", translate("NULL - As Global Proxy"))
 if chnroute then o:value(chnroute, translate("ChinaDNS CHNRoute")) end
+o:value("/etc/gfwlist_mode.txt", translate("GFWList Mode"))
 o.datatype = "or(file, '/dev/null')"
 o.default = "/dev/null"
 o.rmempty = false
+
+o = s:option(Value, "gfwlist_url", translate("Download URL of GFWList file"))
+o:depends("wan_bp_list", "/etc/gfwlist_mode.txt")
+o.datatype = host
+o.placeholder = translate("Download URL of GFWList file")
+o.rmempty = true
+
+o = s:option(Flag, "save_in_ram", translate("Save GFWList file in ram only"))
+o:depends("wan_bp_list", "/etc/gfwlist_mode.txt")
+o.default = "1"
+o.rmempty = true
+
+o = s:option(DynamicList, "dns_for_unblocked_sites", translate("DNS for unblocked sites"))
+o:depends("wan_bp_list", "/etc/gfwlist_mode.txt")
+o.default = "114.114.114.114"
+o.datatype = "ip4addr(0)"
+o.rmempty = true
 
 o = s:option(DynamicList, "wan_bp_ips", translate("Bypassed IP"))
 o.datatype = "ip4addr"

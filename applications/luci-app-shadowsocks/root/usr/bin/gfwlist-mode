@@ -1,0 +1,109 @@
+#!/bin/sh
+
+GFWLIST=gfwlist.conf
+DNSLIST=dns.conf
+GFWMODE=$(uci get shadowsocks.@access_control[0].wan_bp_list 2>/dev/null)
+GFWURL=$(uci get shadowsocks.@access_control[0].gfwlist_url 2>/dev/null)
+SAVEINRAM=$(uci get shadowsocks.@access_control[0].save_in_ram 2>/dev/null)
+DNS=$(uci get shadowsocks.@access_control[0].dns_for_unblocked_sites 2>/dev/null)
+RETVAL=0
+
+usage() {
+	cat <<-EOF
+		Usage: gfwlist-mode [options]
+
+		Valid options are:
+
+		    -on                     enable GFWList mode
+		    -off                    disable GFWList mode
+		    -update                 download GFWList file from server
+		    -h                      show this help message and exit
+EOF
+	exit $1
+}
+
+update_gfwlist() {
+	rm -f /tmp/$GFWLIST
+	wget --no-check-certificate -O /tmp/$GFWLIST $GFWURL
+	if [ ! -s /tmp/$GFWLIST ]; then
+		return 1
+	fi
+
+	# GFWList mode
+	if [ $GFWMODE == "/etc/gfwlist_mode.txt" ]; then
+		cp /tmp/$GFWLIST /tmp/dnsmasq.d
+	fi
+
+	# Save GFWList file in /etc if "save in ram only" option not checked
+	if [ $SAVEINRAM -eq 0 ]; then
+		mv /tmp/$GFWLIST /etc
+	else
+		rm -f /etc/$GFWLIST
+	fi
+
+	return $?
+}
+
+gfwmode_enable() {
+	# Generate dns.conf in /tmp/dnsmasq.d
+	if [ -e /tmp/dnsmasq.d/$DNSLIST ]; then
+		rm -f /tmp/dnsmasq.d/$DNSLIST
+		touch /tmp/dnsmasq.d/$DNSLIST
+	fi
+	for var in $DNS
+	do
+		echo "server=$var" >> /tmp/dnsmasq.d/$DNSLIST
+	done
+
+	# If /etc/$GFWLIST exist then copy to /tmp/dnsmasq.d
+	if [ -s /etc/$GFWLIST ]; then
+		cp /etc/$GFWLIST /tmp/dnsmasq.d
+	fi
+
+	# Download gfwlist file if not exist
+	if [ ! -s /tmp/dnsmasq.d/$GFWLIST ]; then
+		update_gfwlist
+		if [ $? != 0 ]; then
+			return 1
+		fi
+	fi
+
+	uci delete dhcp.@dnsmasq[0].resolvfile
+	uci set dhcp.@dnsmasq[0].noresolv='1'
+	uci commit
+
+	/etc/init.d/dnsmasq restart
+
+	return $?
+}
+
+gfwmode_disable() {
+	rm -f /tmp/dnsmasq.d/$GFWLIST
+	rm -f /tmp/dnsmasq.d/$DNSLIST
+
+	uci delete dhcp.@dnsmasq[0].noresolv
+	uci set dhcp.@dnsmasq[0].resolvfile='/tmp/resolv.conf.auto'
+	uci commit
+
+	/etc/init.d/dnsmasq restart
+
+	return $?
+}
+
+if [ $1 == "-on" ]; then
+	gfwmode_enable
+elif [ $1 == "-off" ]; then
+	gfwmode_disable
+elif [ $1 == "-update" ]; then
+	update_gfwlist
+	# GFWList mode
+	if [ $GFWMODE == "/etc/gfwlist_mode.txt" ]; then
+		/etc/init.d/dnsmasq restart
+	fi
+else
+	usage 0
+fi
+
+RETVAL=$?
+
+return $RETVAL

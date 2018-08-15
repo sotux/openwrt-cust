@@ -13,7 +13,7 @@ config socks5_proxy
 
 config port_forward
 	list server 'nil'
-	option local_port '5300'
+	option local_port '5353'
 	option destination '8.8.4.4:53'
 
 config servers
