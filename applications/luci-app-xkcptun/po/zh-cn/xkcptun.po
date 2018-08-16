@@ -4,17 +4,30 @@ msgstr "Content-Type: text/plain; charset=UTF-8\n"
 msgid ""
 "<a target=\"_blank\" href=\"https://github.com/liudf0716/xkcptun\">Xkcptun</"
 "a> is a kcp tunnel for OpenWRT, implemented in c language"
-msgstr "<a target=\"_blank\" href=\"https://github.com/liudf0716/xkcptun\">Xkcptun</"
+msgstr ""
+"<a target=\"_blank\" href=\"https://github.com/liudf0716/xkcptun\">Xkcptun</"
 "a> 是用 C 语言实现的 kcptun，专为 OpenWRT 平台开发"
 
 msgid "<b style=\"color:red\">Xkcptun not installed.</b>"
 msgstr "Xkcptun 未安装。"
+
+msgid "Accelerator Mode"
+msgstr "加速模式"
+
+msgid "Accelerator mode"
+msgstr "加速模式"
 
 msgid "Advanced Setting"
 msgstr "高级设置"
 
 msgid "Client Configuration"
 msgstr "客户端配置"
+
+msgid "Crypt Method"
+msgstr "加密模式"
+
+msgid "Crypt method"
+msgstr "加密模式"
 
 msgid "DSCP(6bit)"
 msgstr ""
@@ -108,4 +121,3 @@ msgstr ""
 
 msgid "sndwnd"
 msgstr ""
-

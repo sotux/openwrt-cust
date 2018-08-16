@@ -9,10 +9,22 @@ msgstr ""
 msgid "<b style=\"color:red\">Xkcptun not installed.</b>"
 msgstr ""
 
+msgid "Accelerator Mode"
+msgstr ""
+
+msgid "Accelerator mode"
+msgstr ""
+
 msgid "Advanced Setting"
 msgstr ""
 
 msgid "Client Configuration"
+msgstr ""
+
+msgid "Crypt Method"
+msgstr ""
+
+msgid "Crypt method"
 msgstr ""
 
 msgid "DSCP(6bit)"
