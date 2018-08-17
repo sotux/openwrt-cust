@@ -11,6 +11,11 @@ FWDDOMAIN=$(uci get shadowsocks.@access_control[0].wan_fw_domain 2>/dev/null)
 DNSLOCALPORT=$(uci get shadowsocks.@port_forward[0].local_port 2>/dev/null)
 RETVAL=0
 
+loger() {
+	# 1.alert 2.crit 3.err 4.warn 5.notice 6.info 7.debug
+	logger -st gfwlist-mode[$$] -p$1 $2
+}
+
 usage() {
 	cat <<-EOF
 		Usage: gfwlist-mode [options]
@@ -26,9 +31,17 @@ EOF
 }
 
 update_gfwlist() {
+
+	if [ -z $GFWURL ]; then
+		loger 3 "Update GFWList file failed because of invalid URL."
+		return 1
+	fi
+
+	# Download GFWList file
 	rm -f /tmp/$GFWLIST
 	wget --no-check-certificate -O /tmp/$GFWLIST $GFWURL
 	if [ ! -s /tmp/$GFWLIST ]; then
+		loger 3 "Download GFWList file from $GFWURL failed ."
 		return 1
 	fi
 
@@ -77,13 +90,16 @@ gfwmode_enable() {
 	# Download gfwlist file if not exist
 	if [ ! -s /tmp/dnsmasq.d/$GFWLIST ]; then
 		update_gfwlist
-		if [ $? != 0 ]; then
+		if [ ! $? -eq 0 ]; then
+			rm -f /tmp/dnsmasq.d/$GFWLIST
+			rm -f /tmp/dnsmasq.d/$DNSLIST
+			rm -f /tmp/dnsmasq.d/$FWDDOMAINLIST
 			return 1
 		fi
 	fi
 
 	uci delete dhcp.@dnsmasq[0].resolvfile
-	uci set dhcp.@dnsmasq[0].noresolv='1'
+	uci set dhcp.@dnsmasq[0].noresolv="1"
 	uci commit
 
 	/etc/init.d/dnsmasq restart
@@ -97,7 +113,7 @@ gfwmode_disable() {
 	rm -f /tmp/dnsmasq.d/$FWDDOMAINLIST
 
 	uci delete dhcp.@dnsmasq[0].noresolv
-	uci set dhcp.@dnsmasq[0].resolvfile='/tmp/resolv.conf.auto'
+	uci set dhcp.@dnsmasq[0].resolvfile="/tmp/resolv.conf.auto"
 	uci commit
 
 	/etc/init.d/dnsmasq restart
@@ -107,18 +123,24 @@ gfwmode_disable() {
 
 if [ $1 == "-on" ]; then
 	gfwmode_enable
+	RETVAL=$?
+	[[ $RETVAL -eq 0 ]] && loger 6 "Enable GFWList Mode successful." || loger 3 "Enable GFWList Mode failed."
 elif [ $1 == "-off" ]; then
 	gfwmode_disable
+	RETVAL=$?
+	[[ $RETVAL -eq 0 ]] && loger 6 "Disable GFWList Mode successful." || loger 3 "Disable GFWList Mode failed."
 elif [ $1 == "-update" ]; then
 	update_gfwlist
+	RETVAL=$?
 	# GFWList mode
-	if [ $GFWMODE == "/etc/gfwlist_mode.txt" ]; then
+	if [ $GFWMODE == "/etc/gfwlist_mode.txt" ] && [ $? -eq 0 ]; then
 		/etc/init.d/dnsmasq restart
 	fi
+	RETVAL=$?
+	[[ $RETVAL -eq 0 ]] && loger 6 "Update GFWList file successful." || loger 3 "Update GFWList file failed."
 else
 	usage 0
+	RETVAL=$?
 fi
-
-RETVAL=$?
 
 return $RETVAL
