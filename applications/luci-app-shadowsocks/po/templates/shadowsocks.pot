@@ -55,6 +55,9 @@ msgstr ""
 msgid "Extra arguments"
 msgstr ""
 
+msgid "Forwarded Domain"
+msgstr ""
+
 msgid "Forwarded IP"
 msgstr ""
 

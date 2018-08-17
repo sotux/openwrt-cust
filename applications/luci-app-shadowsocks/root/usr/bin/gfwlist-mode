@@ -2,10 +2,13 @@
 
 GFWLIST=gfwlist.conf
 DNSLIST=dns.conf
+FWDDOMAINLIST=forward_domain.conf
 GFWMODE=$(uci get shadowsocks.@access_control[0].wan_bp_list 2>/dev/null)
 GFWURL=$(uci get shadowsocks.@access_control[0].gfwlist_url 2>/dev/null)
 SAVEINRAM=$(uci get shadowsocks.@access_control[0].save_in_ram 2>/dev/null)
 DNS=$(uci get shadowsocks.@access_control[0].dns_for_unblocked_sites 2>/dev/null)
+FWDDOMAIN=$(uci get shadowsocks.@access_control[0].wan_fw_domain 2>/dev/null)
+DNSLOCALPORT=$(uci get shadowsocks.@port_forward[0].local_port 2>/dev/null)
 RETVAL=0
 
 usage() {
@@ -55,6 +58,17 @@ gfwmode_enable() {
 		echo "server=$var" >> /tmp/dnsmasq.d/$DNSLIST
 	done
 
+	# Generate forward_domain.conf in /tmp/dnsmasq.d
+	if [ -e /tmp/dnsmasq.d/$FWDDOMAINLIST ]; then
+		rm -f /tmp/dnsmasq.d/$FWDDOMAINLIST
+		touch /tmp/dnsmasq.d/$FWDDOMAINLIST
+	fi
+	for var in $FWDDOMAIN
+	do
+		echo "server=/$var/127.0.0.1#$DNSLOCALPORT" >> /tmp/dnsmasq.d/$FWDDOMAINLIST
+		echo "ipset=/$var/gfwlist" >> /tmp/dnsmasq.d/$FWDDOMAINLIST
+	done
+
 	# If /etc/$GFWLIST exist then copy to /tmp/dnsmasq.d
 	if [ -s /etc/$GFWLIST ]; then
 		cp /etc/$GFWLIST /tmp/dnsmasq.d
@@ -80,6 +94,7 @@ gfwmode_enable() {
 gfwmode_disable() {
 	rm -f /tmp/dnsmasq.d/$GFWLIST
 	rm -f /tmp/dnsmasq.d/$DNSLIST
+	rm -f /tmp/dnsmasq.d/$FWDDOMAINLIST
 
 	uci delete dhcp.@dnsmasq[0].noresolv
 	uci set dhcp.@dnsmasq[0].resolvfile='/tmp/resolv.conf.auto'

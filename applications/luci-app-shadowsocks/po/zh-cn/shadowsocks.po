@@ -55,8 +55,11 @@ msgstr "加密方式"
 msgid "Extra arguments"
 msgstr "附加参数"
 
+msgid "Forwarded Domain"
+msgstr "额外走代理域名"
+
 msgid "Forwarded IP"
-msgstr "强制走代理 IP"
+msgstr "额外走代理 IP"
 
 msgid "Forwarded IP List"
 msgstr "走代理 IP 列表"
