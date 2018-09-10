@@ -9,6 +9,7 @@ SAVEINRAM=$(uci get shadowsocks.@access_control[0].save_in_ram 2>/dev/null)
 DNS=$(uci get shadowsocks.@access_control[0].dns_for_unblocked_sites 2>/dev/null)
 FWDDOMAIN=$(uci get shadowsocks.@access_control[0].wan_fw_domain 2>/dev/null)
 DNSLOCALPORT=$(uci get shadowsocks.@port_forward[0].local_port 2>/dev/null)
+PORTFWDSVR=$(uci get shadowsocks.@port_forward[0].server 2>/dev/null)
 RETVAL=0
 
 loger() {
@@ -98,9 +99,7 @@ gfwmode_enable() {
 		fi
 	fi
 
-	uci delete dhcp.@dnsmasq[0].resolvfile
-	uci set dhcp.@dnsmasq[0].noresolv="1"
-	uci commit
+	autoresolv_switch
 
 	/etc/init.d/dnsmasq restart
 
@@ -112,13 +111,35 @@ gfwmode_disable() {
 	rm -f /tmp/dnsmasq.d/$DNSLIST
 	rm -f /tmp/dnsmasq.d/$FWDDOMAINLIST
 
-	uci delete dhcp.@dnsmasq[0].noresolv
-	uci set dhcp.@dnsmasq[0].resolvfile="/tmp/resolv.conf.auto"
-	uci commit
+	autoresolv_switch
 
 	/etc/init.d/dnsmasq restart
 
 	return $?
+}
+
+autoresolv_switch() {
+	# if no port forward server selected, use default file resolv.conf.auto
+	# otherwise use dns port forward and disable auto resolve
+	local nilFlag=true
+
+	for server in $PORTFWDSVR
+	do
+		if [ $server != "nil" ]; then
+			nilFlag=false
+			break
+		fi
+	done
+	if $nilFlag; then
+		loger 6 "Switch resolve file to /tmp/resolv.conf.auto"
+		uci delete dhcp.@dnsmasq[0].noresolv
+		uci set dhcp.@dnsmasq[0].resolvfile="/tmp/resolv.conf.auto"
+	else
+		loger 6 "Switch to noresolv"
+		uci delete dhcp.@dnsmasq[0].resolvfile
+		uci set dhcp.@dnsmasq[0].noresolv="1"
+	fi
+	uci commit
 }
 
 if [ $1 == "-on" ]; then
