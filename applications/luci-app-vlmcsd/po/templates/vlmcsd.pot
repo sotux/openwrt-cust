@@ -1,0 +1,26 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+msgid "Auto activate"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid "This file is /etc/vlmcsd.ini."
+msgstr ""
+
+msgid "Vlmcsd is not running."
+msgstr ""
+
+msgid "Vlmcsd is running."
+msgstr ""
+
+msgid "configfile"
+msgstr ""
+
+msgid "vlmcsd"
+msgstr ""
+
+msgid "vlmcsd config"
+msgstr ""
