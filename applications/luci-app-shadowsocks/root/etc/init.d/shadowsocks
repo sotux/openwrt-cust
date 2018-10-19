@@ -213,4 +213,5 @@ stop() {
 		kill_all $(sort -u /var/run/ss-plugin)
 		rm -f /var/run/ss-plugin
 	fi
+	gfwlist-mode -off
 }

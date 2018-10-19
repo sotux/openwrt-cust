@@ -112,6 +112,7 @@ gfwmode_disable() {
 	rm -f /tmp/dnsmasq.d/$FWDDOMAINLIST
 
 	autoresolv_switch
+	ipset destroy gfwlist
 
 	/etc/init.d/dnsmasq restart
 
@@ -154,10 +155,10 @@ elif [ $1 == "-update" ]; then
 	update_gfwlist
 	RETVAL=$?
 	# GFWList mode
-	if [ $GFWMODE == "/etc/gfwlist_mode.txt" ] && [ $? -eq 0 ]; then
+	if [ $GFWMODE == "/etc/gfwlist_mode.txt" ] && [ $RETVAL -eq 0 ]; then
 		/etc/init.d/dnsmasq restart
+        RETVAL=$?
 	fi
-	RETVAL=$?
 	[[ $RETVAL -eq 0 ]] && loger 6 "Update GFWList file successful." || loger 3 "Update GFWList file failed."
 else
 	usage 0
