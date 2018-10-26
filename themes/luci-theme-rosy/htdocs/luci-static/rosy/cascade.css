@@ -119,7 +119,7 @@ html, body {
     margin: 0px;
     padding: 0px;
     height: 100%;
-    font-family: Microsoft Yahei, WenQuanYi Micro Hei, sans-serif, "Helvetica Neue", Helvetica, Hiragino Sans GB;
+    font-family: sans-serif, "Helvetica Neue", Helvetica, Hiragino Sans GB;
 }
 
 select {
