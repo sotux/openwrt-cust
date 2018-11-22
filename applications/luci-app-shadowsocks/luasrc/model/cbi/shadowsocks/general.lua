@@ -74,14 +74,14 @@ for _, v in ipairs({5, 10, 15, 25, 40}) do
 end
 o.datatype = "uinteger"
 o.default = 0
-o.rmempty = false
+o.rmempty = true
 
 -- [[ Transparent Proxy ]]--
 if has_redir then
 	s = m:section(TypedSection, "transparent_proxy", translate("Transparent Proxy"))
 	s.anonymous = true
 
-	o = s:option(DynamicList, "main_server", translate("Main Server"))
+	o = s:option(ListValue, "main_server", translate("Main Server"))
 	o:value("nil", translate("Disable"))
 	for _, s in ipairs(servers) do o:value(s.name, s.alias) end
 	o.default = "nil"
@@ -114,7 +114,7 @@ if has_local then
 	s = m:section(TypedSection, "socks5_proxy", translate("SOCKS5 Proxy"))
 	s.anonymous = true
 
-	o = s:option(DynamicList, "server", translate("Server"))
+	o = s:option(ListValue, "server", translate("Server"))
 	o:value("nil", translate("Disable"))
 	for _, s in ipairs(servers) do o:value(s.name, s.alias) end
 	o.default = "nil"
@@ -136,7 +136,7 @@ if has_tunnel then
 	s = m:section(TypedSection, "port_forward", translate("Port Forward"))
 	s.anonymous = true
 
-	o = s:option(DynamicList, "server", translate("Server"))
+	o = s:option(ListValue, "server", translate("Server"))
 	o:value("nil", translate("Disable"))
 	for _, s in ipairs(servers) do o:value(s.name, s.alias) end
 	o.default = "nil"
