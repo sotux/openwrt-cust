@@ -19,7 +19,8 @@ define Package/kodexplorer
   TITLE:=Kod Explorer
   URL:=https://kodcloud.com
   DEPENDS:=+nginx +php7-fastcgi +php7-fpm +php7-mod-curl +php7-mod-gd +php7-mod-iconv \
-    +php7-mod-json +php7-mod-mbstring +php7-mod-opcache +php7-mod-session +php7-mod-zip
+    +php7-mod-json +php7-mod-mbstring +php7-mod-opcache +php7-mod-session +php7-mod-zip \
+    +zoneinfo-core +zoneinfo-asia
 endef
 
 define Package/kodexplorer/description
