@@ -67,7 +67,11 @@ func_install_kodexplorer()
 	rm $MNT_DIR/$NAME-$VER.tar.gz
 
 	mv $MNT_DIR/$NAME-$VER $KOD_INSTALL_DIR
-	mv $KOD_INSTALL_DIR/data $DATA_DIR
+	if [ -d $DATA_DIR ]; then
+		rm $KOD_INSTALL_DIR/data -rf
+	else
+		mv $KOD_INSTALL_DIR/data $DATA_DIR
+	fi
 	echo -n "<?php define('DATA_PATH','$DATA_DIR/');" > $KOD_INSTALL_DIR/config/define.php
 
 	chown nobody:nogroup -R $KOD_INSTALL_DIR
