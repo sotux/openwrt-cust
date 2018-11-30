@@ -1,5 +1,4 @@
-local fs = require "nixio.fs"
-local m, s, s2
+local m, s
 
 local running=(luci.sys.call("pidof vlmcsd > /dev/null") == 0)
 if running then	
@@ -24,30 +23,18 @@ local domain = luci.model.uci.cursor():get_first("dhcp", "dnsmasq", "domain")
 autoactivate = s:option(Flag, "autoactivate", translate("Auto activate"))
 autoactivate.rmempty = false
 
-s2 = m:section(TypedSection, "_ini", translate("configfile"),
-	translate("This file is /etc/vlmcsd.ini."))
-s2.addremove = false
-s2.anonymous = true
-s2.template  = "cbi/tblsection"
+config = s:option(Value, "config", translate("configfile"), translate("This file is /etc/vlmcsd.ini."), "")
+config.template = "cbi/tvalue"
+config.rows = 30
+config.wrap = "off"
 
-function s2.cfgsections()
-	return { "_config" }
-end
-
-config = s2:option(TextValue, "_data", "")
-config.wrap    = "off"
-config.rows    = 15
-
-function config.cfgvalue()
-	return fs.readfile("/etc/vlmcsd.ini") or ""
+function config.cfgvalue(self, section)
+	return nixio.fs.readfile("/etc/vlmcsd.ini")
 end
 
 function config.write(self, section, value)
-	return fs.writefile("/etc/vlmcsd.ini", value:gsub("\r\n", "\n"))
-end
-
-function config.remove(self, section, value)
-	return fs.writefile("/etc/vlmcsd.ini", "")
+	value = value:gsub("\r\n?", "\n")
+	nixio.fs.writefile("/etc/vlmcsd.ini", value)
 end
 
 function enable.write(self, section, value)
