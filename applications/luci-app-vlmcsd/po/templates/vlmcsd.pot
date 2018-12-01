@@ -16,7 +16,7 @@ msgstr ""
 msgid "Vlmcsd is running."
 msgstr ""
 
-msgid "configfile"
+msgid "Config File"
 msgstr ""
 
 msgid "vlmcsd"

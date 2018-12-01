@@ -26,7 +26,7 @@ msgstr "Vlmcsd 未运行。"
 msgid "Vlmcsd is running."
 msgstr "Vlmcsd 运行中。"
 
-msgid "configfile"
+msgid "Config File"
 msgstr "配置文件"
 
 msgid "vlmcsd"
