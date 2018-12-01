@@ -2,30 +2,45 @@
 # Copyright (c) 2011-2015 OpenWrt.org
 
 START=90
+STOP=10
 
-start(){
-	if [ ! -f "/tmp/vlmcsd.pid" ]; then
-		/usr/bin/vlmcsd -i /etc/vlmcsd.ini -p /tmp/vlmcsd.pid -l syslog -L 0.0.0.0:1688 -L [::]:1688
-		echo "KMS Server has started."
-	else
-		echo "KMS Server has already started."
-	fi
+NAME=vlmcsd
+CONFIG_FILE=/etc/vlmcsd.ini
+HOSTMAME=$(uci get system.@system[0].hostname 2>/dev/null)
+DOMAIN=$(uci get dhcp.@dnsmasq[0].domain 2>/dev/null)
+
+loger() {
+	# 1.alert 2.crit 3.err 4.warn 5.notice 6.info 7.debug
+	logger -st $NAME[$$] -p$1 $2
 }
 
-stop(){
-	if [ ! -f "/tmp/vlmcsd.pid" ]; then
-		echo "KMS Server is not running."
-	else
-		pid=`cat /tmp/vlmcsd.pid`
-		kill $pid
-		rm -f /tmp/vlmcsd.pid
-		echo "KMS Server has stopped."
-	fi
+start_vlmcsd() {
+	/usr/bin/$NAME -i $CONFIG_FILE -p /var/run/$NAME.pid -l syslog -u root
+	loger 6 "KMS Server has started."
 }
 
-restart(){
-	stop
-	sleep 1
-	start
-	echo "KMS Server has restarted."
+start() {
+	if [ $(uci get $NAME.config.enabled 2>/dev/null) = 0 ]; then
+		return 0
+	fi
+
+	if [ ! -f "/var/run/$NAME.pid" ]; then
+		start_vlmcsd
+	fi
+
+	sed -i '/srv-host=_vlmcs._tcp/d' /etc/dnsmasq.conf
+	if [ $(uci get $NAME.config.autoactivate 2>/dev/null) = 1 ]; then
+		echo srv-host=_vlmcs._tcp.$DOMAIN,$HOSTNAME.$DOMAIN,1688,0,100 >> /etc/dnsmasq.conf
+	fi
+	/etc/init.d/dnsmasq restart
+}
+
+stop() {
+	if [ ! -f "/var/run/$NAME.pid" ]; then
+		loger 6 "KMS Server is not running."
+	else
+		kill -9 $(pidof $NAME) >/dev/null 2>&1
+		rm -f /var/run/$NAME.pid
+		loger 6 "KMS Server has stopped."
+	fi
 }
