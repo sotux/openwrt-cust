@@ -40,7 +40,7 @@ update_gfwlist() {
 
 	# Download GFWList file
 	rm -f /tmp/$GFWLIST
-	wget --no-check-certificate -O /tmp/$GFWLIST $GFWURL
+	curl -o /tmp/$GFWLIST $GFWURL
 	if [ ! -s /tmp/$GFWLIST ]; then
 		loger 3 "Download GFWList file from $GFWURL failed ."
 		return 1
