@@ -1,16 +1,22 @@
 #!/bin/sh
+. $IPKG_INSTROOT/lib/functions.sh
 
 GFWLIST=gfwlist.conf
+GFWLIST_TGZ=gfwlist.conf.tgz
 DNSLIST=dns.conf
 FWDDOMAINLIST=forward_domain.conf
 GFWMODE=$(uci get shadowsocks.@access_control[0].wan_bp_list 2>/dev/null)
 GFWURL=$(uci get shadowsocks.@access_control[0].gfwlist_url 2>/dev/null)
-SAVEINRAM=$(uci get shadowsocks.@access_control[0].save_in_ram 2>/dev/null)
 DNS=$(uci get shadowsocks.@access_control[0].dns_for_unblocked_sites 2>/dev/null)
 FWDDOMAIN=$(uci get shadowsocks.@access_control[0].wan_fw_domain 2>/dev/null)
 DNSLOCALPORT=$(uci get shadowsocks.@port_forward[0].local_port 2>/dev/null)
 PORTFWDSVR=$(uci get shadowsocks.@port_forward[0].server 2>/dev/null)
 RETVAL=0
+
+# get dnsmasq conf-dir
+config_get dnsmasqconfdir dnsmasq confdir "/tmp/dnsmasq.d"
+dnsmasqconfdir="${dnsmasqconfdir%%,*}"
+[ ! -d "$dnsmasqconfdir" ] && mkdir -p $dnsmasqconfdir
 
 loger() {
 	# 1.alert 2.crit 3.err 4.warn 5.notice 6.info 7.debug
@@ -39,64 +45,59 @@ update_gfwlist() {
 	fi
 
 	# Download GFWList file
-	rm -f /tmp/$GFWLIST
-	curl -o /tmp/$GFWLIST $GFWURL
-	if [ ! -s /tmp/$GFWLIST ]; then
+	local OLDPWD=`pwd`
+	cd /tmp
+
+	rm -f $GFWLIST
+	curl -o $GFWLIST $GFWURL
+	if [ ! -s $GFWLIST ]; then
 		loger 3 "Download GFWList file from $GFWURL failed ."
+		cd $OLDPWD
 		return 1
 	fi
 
-	# GFWList mode
-	if [ $GFWMODE == "/etc/gfwlist_mode.txt" ]; then
-		cp /tmp/$GFWLIST /tmp/dnsmasq.d
-	fi
+	# Compress and save GFWList file in /etc
+	tar czf /etc/$GFWLIST_TGZ $GFWLIST
+	rm -f $GFWLIST
 
-	# Save GFWList file in /etc if "save in ram only" option not checked
-	if [ $SAVEINRAM -eq 0 ]; then
-		mv /tmp/$GFWLIST /etc
-	else
-		rm -f /etc/$GFWLIST
-	fi
-
+	cd $OLDPWD
 	return $?
 }
 
 gfwmode_enable() {
-	# Generate dns.conf in /tmp/dnsmasq.d
-	if [ -e /tmp/dnsmasq.d/$DNSLIST ]; then
-		rm -f /tmp/dnsmasq.d/$DNSLIST
-		touch /tmp/dnsmasq.d/$DNSLIST
+	# Generate dns.conf in $dnsmasqconfdir
+	if [ -e $dnsmasqconfdir/$DNSLIST ]; then
+		rm -f $dnsmasqconfdir/$DNSLIST
+		touch $dnsmasqconfdir/$DNSLIST
 	fi
 	for var in $DNS
 	do
-		echo "server=$var" >> /tmp/dnsmasq.d/$DNSLIST
+		echo "server=$var" >> $dnsmasqconfdir/$DNSLIST
 	done
 
-	# Generate forward_domain.conf in /tmp/dnsmasq.d
-	if [ -e /tmp/dnsmasq.d/$FWDDOMAINLIST ]; then
-		rm -f /tmp/dnsmasq.d/$FWDDOMAINLIST
-		touch /tmp/dnsmasq.d/$FWDDOMAINLIST
+	# Generate forward_domain.conf in $dnsmasqconfdir
+	if [ -e $dnsmasqconfdir/$FWDDOMAINLIST ]; then
+		rm -f $dnsmasqconfdir/$FWDDOMAINLIST
+		touch $dnsmasqconfdir/$FWDDOMAINLIST
 	fi
 	for var in $FWDDOMAIN
 	do
-		echo "server=/$var/127.0.0.1#$DNSLOCALPORT" >> /tmp/dnsmasq.d/$FWDDOMAINLIST
-		echo "ipset=/$var/gfwlist" >> /tmp/dnsmasq.d/$FWDDOMAINLIST
+		echo "server=/$var/127.0.0.1#$DNSLOCALPORT" >> $dnsmasqconfdir/$FWDDOMAINLIST
+		echo "ipset=/$var/gfwlist" >> $dnsmasqconfdir/$FWDDOMAINLIST
 	done
 
-	# If /etc/$GFWLIST exist then copy to /tmp/dnsmasq.d
-	if [ -s /etc/$GFWLIST ]; then
-		cp /etc/$GFWLIST /tmp/dnsmasq.d
-	fi
-
-	# Download gfwlist file if not exist
-	if [ ! -s /tmp/dnsmasq.d/$GFWLIST ]; then
+	# If /etc/$GFWLIST_TGZ exist then extract to $dnsmasqconfdir
+	if [ ! -s /etc/$GFWLIST_TGZ ]; then
 		update_gfwlist
 		if [ ! $? -eq 0 ]; then
-			rm -f /tmp/dnsmasq.d/$GFWLIST
-			rm -f /tmp/dnsmasq.d/$DNSLIST
-			rm -f /tmp/dnsmasq.d/$FWDDOMAINLIST
-			return 1
+			rm -f $dnsmasqconfdir/$GFWLIST
+			rm -f $dnsmasqconfdir/$DNSLIST
+			rm -f $dnsmasqconfdir/$FWDDOMAINLIST
+		else
+			tar xzf /etc/$GFWLIST_TGZ -C $dnsmasqconfdir
 		fi
+	else
+		tar xzf /etc/$GFWLIST_TGZ -C $dnsmasqconfdir
 	fi
 
 	autoresolv_switch
@@ -107,11 +108,11 @@ gfwmode_enable() {
 }
 
 gfwmode_disable() {
-	rm -f /tmp/dnsmasq.d/$GFWLIST
-	rm -f /tmp/dnsmasq.d/$DNSLIST
-	rm -f /tmp/dnsmasq.d/$FWDDOMAINLIST
+	rm -f $dnsmasqconfdir/$GFWLIST
+	rm -f $dnsmasqconfdir/$DNSLIST
+	rm -f $dnsmasqconfdir/$FWDDOMAINLIST
 
-	autoresolv_switch
+	autoresolv_switch true
 	ipset destroy gfwlist
 
 	/etc/init.d/dnsmasq restart
@@ -131,7 +132,7 @@ autoresolv_switch() {
 			break
 		fi
 	done
-	if $nilFlag; then
+	if [[ $nilFlag || $1 ]]; then
 		loger 6 "Switch resolve file to /tmp/resolv.conf.auto"
 		uci delete dhcp.@dnsmasq[0].noresolv
 		uci set dhcp.@dnsmasq[0].resolvfile="/tmp/resolv.conf.auto"

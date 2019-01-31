@@ -145,9 +145,6 @@ msgstr ""
 msgid "Same as Main Server"
 msgstr ""
 
-msgid "Save GFWList file in ram only"
-msgstr ""
-
 msgid "Self Proxy"
 msgstr ""
 

@@ -61,11 +61,6 @@ o.datatype = host
 o.placeholder = translate("Download URL of GFWList file")
 o.rmempty = true
 
-o = s:option(Flag, "save_in_ram", translate("Save GFWList file in ram only"))
-o:depends("wan_bp_list", "/etc/gfwlist_mode.txt")
-o.default = "1"
-o.rmempty = true
-
 o = s:option(DynamicList, "dns_for_unblocked_sites", translate("DNS for unblocked sites"))
 o:depends("wan_bp_list", "/etc/gfwlist_mode.txt")
 o.default = "114.114.114.114"
