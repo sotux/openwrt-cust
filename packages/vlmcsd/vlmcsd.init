@@ -20,6 +20,7 @@ start_vlmcsd() {
 }
 
 start_service() {
+	sed -i '/srv-host=_vlmcs._tcp/d' /etc/dnsmasq.conf
 	if [ $(uci get $NAME.config.enabled 2>/dev/null) = 0 ]; then
 		return 0
 	fi
