@@ -26,6 +26,18 @@ local encrypt_methods = {
 	"xchacha20-ietf-poly1305",
 }
 
+local function has_bin(name)
+	return luci.sys.call("command -v %s >/dev/null" %{name}) == 0
+end
+
+local plugins = {""}
+if has_bin("obfs-local") then
+	table.insert(plugins, "obfs-local")
+end
+if has_bin("v2ray-plugin") then
+	table.insert(plugins, "v2ray-plugin")
+end
+
 m = Map(shadowsocks, "%s - %s" %{translate("ShadowSocks"), translate("Edit Server")})
 m.redirect = luci.dispatcher.build_url("admin/services/shadowsocks/servers")
 m.sid = sid
@@ -72,8 +84,9 @@ o = s:option(ListValue, "encrypt_method", translate("Encrypt Method"))
 for _, v in ipairs(encrypt_methods) do o:value(v, v:upper()) end
 o.rmempty = false
 
-o = s:option(Value, "plugin", translate("Plugin Name"))
-o.placeholder = "eg: obfs-local"
+o = s:option(ListValue, "plugin", translate("Plugin Name"))
+for _, v in ipairs(plugins) do o:value(v) end
+o.rmempty = true
 
 o = s:option(Value, "plugin_opts", translate("Plugin Arguments"))
 o.placeholder = "eg: obfs=http;obfs-host=www.bing.com"
