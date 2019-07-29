@@ -58,6 +58,8 @@ flush_rules() {
 gfwlist_init() {
     ipt="iptables -t nat"
     setname=$(ipset -n list | grep -w "gfwlist")
+	enableChromecast=$(uci get shadowsocks.@general[0].enable_chromecast 2>/dev/null)
+
     if [ ! "$setname" ]; then
         ipset create gfwlist hash:ip
     fi
@@ -71,6 +73,16 @@ gfwlist_init() {
     else
         /usr/bin/gfwlist-mode -off
         loger 6 "GFW List Mode disabled."
+    fi
+
+    if [ "$enableChromecast" == 1 ]; then
+		loger 6 "Enable chromcast support."
+        $ipt -I PREROUTING -p udp -d 8.8.8.8 --dport 53 -j REDIRECT --to-ports 53
+        $ipt -I PREROUTING -p udp -d 8.8.4.4 --dport 53 -j REDIRECT --to-ports 53
+    else
+		loger 6 "Disable chromcast support."
+        $ipt -D PREROUTING -p udp -d 8.8.8.8 --dport 53 -j REDIRECT --to-ports 53
+        $ipt -D PREROUTING -p udp -d 8.8.4.4 --dport 53 -j REDIRECT --to-ports 53
     fi
     return 0
 }

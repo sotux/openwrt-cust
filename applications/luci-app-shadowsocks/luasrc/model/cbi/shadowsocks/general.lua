@@ -67,14 +67,8 @@ end
 s = m:section(TypedSection, "general", translate("Global Settings"))
 s.anonymous = true
 
-o = s:option(Value, "startup_delay", translate("Startup Delay"))
-o:value(0, translate("Not enabled"))
-for _, v in ipairs({5, 10, 15, 25, 40}) do
-	o:value(v, translatef("%u seconds", v))
-end
-o.datatype = "uinteger"
-o.default = 0
-o.rmempty = true
+o = s:option(Flag, "enable_chromecast", translate("Enable Chromecast"))
+o.rmempty = false
 
 -- [[ Transparent Proxy ]]--
 if has_redir then
