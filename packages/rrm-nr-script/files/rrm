@@ -1,0 +1,93 @@
+#!/bin/sh
+
+radios=$(ubus list | grep hostapd.wlan)
+
+_discover_neighbors() {
+	local rrm_neighbors
+
+	ubus call umdns update
+	sleep 2
+
+	rrm_neighbors=$(ubus call umdns browse | jsonfilter -e '@["_rrm._udp"][*].txt')
+
+	for value in ${rrm_neighbors}
+	do
+		rrm_nr_lists=${rrm_nr_lists}",${value}"
+	done
+}
+
+_append_own() {
+	for value in ${radios}
+	do
+		rrm_nr_lists=${rrm_nr_lists}",$(ubus call ${value} rrm_nr_get_own | jsonfilter -e '$.value')"
+	done
+}
+
+while true
+do
+	OIFS=$IFS
+	IFS=$'\n'
+
+	rrm_nr_lists=""
+
+	_discover_neighbors
+	_append_own
+
+	for value in ${radios}
+	do
+		ubus call ${value} bss_mgmt_enable '{"neighbor_report": true}'
+		eval "ubus call ${value} rrm_nr_set '{ \"list\": [ ${rrm_nr_lists:1} ] }'"
+	done
+
+	sleep 60
+
+	IFS=$OIFS
+done
+
+exit 0#!/bin/sh
+
+radios=$(ubus list | grep hostapd.wlan)
+
+_discover_neighbors() {
+	local rrm_neighbors
+
+	ubus call umdns update
+	sleep 2
+
+	rrm_neighbors=$(ubus call umdns browse | jsonfilter -e '@["_rrm._nr"][*].txt')
+
+	for value in ${rrm_neighbors}
+	do
+		rrm_nr_lists=${rrm_nr_lists}",${value}"
+	done
+}
+
+_append_own() {
+	for value in ${radios}
+	do
+		rrm_nr_lists=${rrm_nr_lists}",$(ubus call ${value} rrm_nr_get_own | jsonfilter -e '$.value')"
+	done
+}
+
+while true
+do
+	OIFS=$IFS
+	IFS=$'\n'
+
+	rrm_nr_lists=""
+
+	_discover_neighbors
+	_append_own
+
+	for value in ${radios}
+	do
+		ubus call ${value} bss_mgmt_enable '{"neighbor_report": true}'
+		eval "ubus call ${value} rrm_nr_set '{ \"list\": [ ${rrm_nr_lists:1} ] }'"
+	done
+
+	sleep 60
+
+	IFS=$OIFS
+done
+
+exit 0
