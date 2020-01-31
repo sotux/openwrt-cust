@@ -12,6 +12,7 @@ LUCI_DEFAULTS:=$(notdir $(wildcard ${CURDIR}/root/etc/uci-defaults/*))
 LUCI_PKGARCH?=$(if $(realpath src/Makefile),,all)
 
 # Language code titles
+LUCI_LANG.bg=български (Bulgarian)
 LUCI_LANG.ca=Català (Catalan)
 LUCI_LANG.cs=Čeština (Czech)
 LUCI_LANG.de=Deutsch (German)
@@ -20,24 +21,26 @@ LUCI_LANG.en=English
 LUCI_LANG.es=Español (Spanish)
 LUCI_LANG.fr=Français (French)
 LUCI_LANG.he=עִבְרִית (Hebrew)
+LUCI_LANG.hi=हिंदी (Hindi)
 LUCI_LANG.hu=Magyar (Hungarian)
 LUCI_LANG.it=Italiano (Italian)
 LUCI_LANG.ja=日本語 (Japanese)
 LUCI_LANG.ko=한국어 (Korean)
+LUCI_LANG.mr=मराठी (Marathi)
 LUCI_LANG.ms=Bahasa Melayu (Malay)
-LUCI_LANG.no=Norsk (Norwegian)
+LUCI_LANG.nb_NO=Norsk (Norwegian)
 LUCI_LANG.pl=Polski (Polish)
-LUCI_LANG.pt-br=Português do Brasil (Brazialian Portuguese)
+LUCI_LANG.pt_BR=Português do Brasil (Brazialian Portuguese)
 LUCI_LANG.pt=Português (Portuguese)
 LUCI_LANG.ro=Română (Romanian)
 LUCI_LANG.ru=Русский (Russian)
 LUCI_LANG.sk=Slovenčina (Slovak)
 LUCI_LANG.sv=Svenska (Swedish)
 LUCI_LANG.tr=Türkçe (Turkish)
-LUCI_LANG.uk=украї́нська (Ukrainian)
+LUCI_LANG.uk=Українська (Ukrainian)
 LUCI_LANG.vi=Tiếng Việt (Vietnamese)
-LUCI_LANG.zh-cn=中文 (Chinese)
-LUCI_LANG.zh-tw=臺灣華語 (Taiwanese)
+LUCI_LANG.zh_Hans=中文 (Chinese)
+LUCI_LANG.zh_Hant=臺灣華語 (Taiwanese)
 
 # Submenu titles
 LUCI_MENU.col=1. Collections
@@ -46,6 +49,12 @@ LUCI_MENU.app=3. Applications
 LUCI_MENU.theme=4. Themes
 LUCI_MENU.proto=5. Protocols
 LUCI_MENU.lib=6. Libraries
+
+# Language aliases
+LUCI_LC_ALIAS.nb_NO=no
+LUCI_LC_ALIAS.pt_BR=pt-br
+LUCI_LC_ALIAS.zh_Hans=zh-cn
+LUCI_LC_ALIAS.zh_Hant=zh-tw
 
 
 PKG_NAME?=$(LUCI_NAME)
@@ -83,8 +92,8 @@ PKG_GITBRANCH?=$(if $(DUMP),x,$(strip $(shell \
 
 PKG_RELEASE?=1
 PKG_INSTALL:=$(if $(realpath src/Makefile),1)
-PKG_BUILD_DEPENDS += lua/host luci-base/host $(LUCI_BUILD_DEPENDS)
-PKG_CONFIG_DEPENDS += CONFIG_LUCI_SRCDIET
+PKG_BUILD_DEPENDS += lua/host luci-base/host LUCI_CSSTIDY:csstidy/host $(LUCI_BUILD_DEPENDS)
+PKG_CONFIG_DEPENDS += CONFIG_LUCI_SRCDIET CONFIG_LUCI_JSMIN CONFIG_LUCI_CSSTIDY
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
 
@@ -112,6 +121,14 @@ ifeq ($(PKG_NAME),luci-base)
    config LUCI_SRCDIET
 	bool "Minify Lua sources"
 	default n
+
+   config LUCI_JSMIN
+	bool "Minify JavaScript sources"
+	default y
+
+   config LUCI_CSSTIDY
+        bool "Minify CSS files"
+        default y
 
    menu "Translations"$(foreach lang,$(LUCI_LANGUAGES),
 
@@ -153,7 +170,21 @@ LUCI_LIBRARYDIR = $(LUA_LIBRARYDIR)/luci
 
 define SrcDiet
 	$(FIND) $(1) -type f -name '*.lua' | while read src; do \
-		if LuaSrcDiet --noopt-binequiv -o "$$$$src.o" "$$$$src"; \
+		if LUA_PATH="$(STAGING_DIR_HOSTPKG)/lib/lua/5.1/?.lua" luasrcdiet --noopt-binequiv -o "$$$$src.o" "$$$$src"; \
+		then mv "$$$$src.o" "$$$$src"; fi; \
+	done
+endef
+
+define JsMin
+	$(FIND) $(1) -type f -name '*.js' | while read src; do \
+		if jsmin < "$$$$src" > "$$$$src.o"; \
+		then mv "$$$$src.o" "$$$$src"; fi; \
+	done
+endef
+
+define CssTidy
+	$(FIND) $(1) -type f -name '*.css' | while read src; do \
+		if csstidy "$$$$src" --template=highest --remove_last_semicolon=true "$$$$src.o"; \
 		then mv "$$$$src.o" "$$$$src"; fi; \
 	done
 endef
@@ -177,6 +208,8 @@ define Package/$(PKG_NAME)/install
 	if [ -d $(PKG_BUILD_DIR)/htdocs ]; then \
 	  $(INSTALL_DIR) $(1)$(HTDOCS); \
 	  cp -pR $(PKG_BUILD_DIR)/htdocs/* $(1)$(HTDOCS)/; \
+	  $(if $(CONFIG_LUCI_JSMIN),$(call JsMin,$(1)$(HTDOCS)/),true); \
+	  $(if $(CONFIG_LUCI_CSSTIDY),$(call CssTidy,$(1)$(HTDOCS)/),true); \
 	else true; fi
 	if [ -d $(PKG_BUILD_DIR)/root ]; then \
 	  $(INSTALL_DIR) $(1)/; \
@@ -200,27 +233,29 @@ endif
 
 LUCI_BUILD_PACKAGES := $(PKG_NAME)
 
+# 1: LuCI language code
+# 2: BCP 47 language tag
 define LuciTranslation
   define Package/luci-i18n-$(LUCI_BASENAME)-$(1)
     SECTION:=luci
     CATEGORY:=LuCI
     TITLE:=$(PKG_NAME) - $(1) translation
     HIDDEN:=1
-    DEFAULT:=LUCI_LANG_$(1)||(ALL&&m)
+    DEFAULT:=LUCI_LANG_$(2)||(ALL&&m)
     DEPENDS:=$(PKG_NAME)
     PKGARCH:=all
   endef
 
   define Package/luci-i18n-$(LUCI_BASENAME)-$(1)/description
-    Translation for $(PKG_NAME) - $(LUCI_LANG.$(1))
+    Translation for $(PKG_NAME) - $(LUCI_LANG.$(2))
   endef
 
   define Package/luci-i18n-$(LUCI_BASENAME)-$(1)/install
 	$$(INSTALL_DIR) $$(1)/etc/uci-defaults
-	echo "uci set luci.languages.$(subst -,_,$(1))='$(LUCI_LANG.$(1))'; uci commit luci" \
+	echo "uci set luci.languages.$(subst -,_,$(1))='$(LUCI_LANG.$(2))'; uci commit luci" \
 		> $$(1)/etc/uci-defaults/luci-i18n-$(LUCI_BASENAME)-$(1)
 	$$(INSTALL_DIR) $$(1)$(LUCI_LIBRARYDIR)/i18n
-	$(foreach po,$(wildcard ${CURDIR}/po/$(1)/*.po), \
+	$(foreach po,$(wildcard ${CURDIR}/po/$(2)/*.po), \
 		po2lmo $(po) \
 			$$(1)$(LUCI_LIBRARYDIR)/i18n/$(basename $(notdir $(po))).$(1).lmo;)
   endef
@@ -236,5 +271,5 @@ define LuciTranslation
 
 endef
 
-$(foreach lang,$(LUCI_LANGUAGES),$(eval $(call LuciTranslation,$(lang))))
+$(foreach lang,$(LUCI_LANGUAGES),$(eval $(call LuciTranslation,$(firstword $(LUCI_LC_ALIAS.$(lang)) $(lang)),$(lang))))
 $(foreach pkg,$(LUCI_BUILD_PACKAGES),$(eval $(call BuildPackage,$(pkg))))
