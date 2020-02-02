@@ -1,4 +1,4 @@
--- Copyright 2016-2017 Xingwang Liao <kuoruan@gmail.com>
+-- Copyright 2016-2019 Xingwang Liao <kuoruan@gmail.com>
 -- Licensed to the public under the Apache License 2.0.
 
 local dsp = require "luci.dispatcher"
@@ -130,6 +130,16 @@ o.enabled = "true"
 o.disabled = "false"
 o.rmempty = false
 
+o = s:option(Flag, "quiet", translate("quiet"), translate("Suppress the 'stream open/close' messages"))
+o.enabled = "true"
+o.disabled = "false"
+o.rmempty = false
+
+o = s:option(Flag, "tcp", translate("tcp"), translate("TCP transmission"))
+o.enabled = "true"
+o.disabled = "false"
+o.rmempty = false
+
 o = s:option(Flag, "acknodelay", translate("acknodelay"))
 o.enabled = "true"
 o.disabled = "false"
@@ -153,6 +163,52 @@ o = s:option(Value, "sockbuf", "%s (%s)" % { translate("sockbuf"), translate("op
 	translate("Send/secv buffer size of udp sockets, default unit is MB."))
 o.datatype = "uinteger"
 o.placeholder = "4"
+o.cfgvalue = function(...)
+	local value = Value.cfgvalue(...)
+
+	if value then
+		return tonumber(value) / 1024 / 1024
+	end
+end
+o.write = function(self, section, value)
+	local number = tonumber(value)
+	if number then
+		Value.write(self, section, number * 1024 * 1024)
+	else
+		Value.remove(self, section)
+	end
+end
+
+o = s:option(Value, "smuxver", "%s (%s)" % { translate("smuxver"), translate("optional") },
+	translate("Specify smux version, available 1,2, default: 1"))
+o:value("1")
+o:value("2")
+o.default = "1"
+
+o = s:option(Value, "smuxbuf", "%s (%s)" % { translate("smuxbuf"), translate("optional") },
+	translate("The overall de-mux buffer, default unit is MB."))
+o.datatype = "uinteger"
+o.placeholder = "4"
+o.cfgvalue = function(...)
+	local value = Value.cfgvalue(...)
+
+	if value then
+		return tonumber(value) / 1024 / 1024
+	end
+end
+o.write = function(self, section, value)
+	local number = tonumber(value)
+	if number then
+		Value.write(self, section, number * 1024 * 1024)
+	else
+		Value.remove(self, section)
+	end
+end
+
+o = s:option(Value, "streambuf", "%s (%s)" % { translate("streambuf"), translate("optional") },
+	translate("Per stream receive buffer, default unit is MB."))
+o.datatype = "uinteger"
+o.placeholder = "2"
 o.cfgvalue = function(...)
 	local value = Value.cfgvalue(...)
 
