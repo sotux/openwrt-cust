@@ -206,8 +206,7 @@ start_kcptun_instance() {
 	add_iptables_rule "$listen_port"
 
 	procd_open_instance
-	procd_set_param command "$client_file"
-	procd_append_param command -c "$config_file"
+	procd_set_param command "$client_file" -c "$config_file"
 	procd_set_param respawn
 	procd_set_param user "$daemon_user"
 	procd_set_param file "$config_file"
