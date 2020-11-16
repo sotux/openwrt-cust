@@ -767,7 +767,7 @@ msgstr ""
 
 #: applications/luci-app-ssr-plus/luasrc/model/cbi/shadowsocksr/client-config.lua:333
 msgid "allowInsecure"
-msgstr ""
+msgstr "允许非安全的连接"
 
 #: applications/luci-app-ssr-plus/luasrc/model/cbi/shadowsocksr/client-config.lua:380
 msgid "bin:/usr/bin/kcptun-c"
