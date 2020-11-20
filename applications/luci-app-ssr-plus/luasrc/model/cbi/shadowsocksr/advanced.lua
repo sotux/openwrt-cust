@@ -49,21 +49,4 @@ s.anonymous = true
 o = s:option(Flag, "adblock", translate("Enable adblock"))
 o.rmempty = false
 
--- [[ SOCKS5 Proxy ]]--
-if nixio.fs.access("/usr/bin/ssr-local") then
-s = m:section(TypedSection, "socks5_proxy", translate("SOCKS5 Proxy"))
-s.anonymous = true
-
-o = s:option(ListValue, "server", translate("Server"))
-o:value("nil", translate("Disable"))
-for _,key in pairs(key_table) do o:value(key,server_table[key]) end
-o.default = "nil"
-o.rmempty = false
-
-o = s:option(Value, "local_port", translate("Local Port"))
-o.datatype = "port"
-o.default = 1080
-o.rmempty = false
-
-end
 return m

@@ -20,31 +20,6 @@ end
 
 
 local server_table = {}
-local encrypt_methods = {
-	"none",
-	"table",
-	"rc4",
-	"rc4-md5-6",
-	"rc4-md5",
-	"aes-128-cfb",
-	"aes-192-cfb",
-	"aes-256-cfb",
-	"aes-128-ctr",
-	"aes-192-ctr",
-	"aes-256-ctr",
-	"bf-cfb",
-	"camellia-128-cfb",
-	"camellia-192-cfb",
-	"camellia-256-cfb",
-	"cast5-cfb",
-	"des-cfb",
-	"idea-cfb",
-	"rc2-cfb",
-	"seed-cfb",
-	"salsa20",
-	"chacha20",
-	"chacha20-ietf",
-}
 
 local encrypt_methods_ss = {
 	-- aead
@@ -86,13 +61,13 @@ local protocol = {
 	"auth_chain_f",
 }
 
-obfs = {
-	"plain",
-	"http_simple",
-	"http_post",
-	"random_head",
-	"tls1.2_ticket_auth",
-}
+local plugins = {""}
+if nixio.fs.access("/usr/bin/obfs-local") then
+	table.insert(plugins, "obfs-local")
+end
+if nixio.fs.access("/usr/bin/v2ray-plugin") then
+	table.insert(plugins, "v2ray-plugin")
+end
 
 local securitys = {
 	"auto",
@@ -114,23 +89,20 @@ s = m:section(NamedSection, sid, "servers")
 s.anonymous = true
 s.addremove   = false
 
-o = s:option(DummyValue,"ssr_url","SS/SSR/V2RAY/TROJAN URL")
+o = s:option(DummyValue,"ssr_url","SS/V2RAY/TROJAN URL")
 o.rawhtml  = true
 o.template = "shadowsocksr/ssrurl"
 o.value =sid
 
 o = s:option(ListValue, "type", translate("Server Node Type"))
-if nixio.fs.access("/usr/bin/ss-local") then
-o:value("ssr", translate("ShadowsocksR"))
-end
 if nixio.fs.access("/usr/bin/ss-redir") then
-o:value("ss", translate("Shadowsocks-libev"))
+	o:value("ss", translate("Shadowsocks-libev"))
 end
 if nixio.fs.access("/usr/bin/v2ray/v2ray") or nixio.fs.access("/usr/bin/v2ray") then
-o:value("v2ray", translate("V2Ray"))
+	o:value("v2ray", translate("V2Ray"))
 end
 if nixio.fs.access("/usr/bin/trojan") then
-o:value("trojan", translate("Trojan"))
+	o:value("trojan", translate("Trojan"))
 end
 o.description = translate("Using incorrect encryption mothod may causes service fail to start")
 
@@ -144,43 +116,24 @@ o = s:option(Value, "server_port", translate("Server Port"))
 o.datatype = "port"
 o.rmempty = false
 
--- o = s:option(Value, "timeout", translate("Connection Timeout"))
--- o.datatype = "uinteger"
--- o.default = 60
--- o.rmempty = false
-
 o = s:option(Value, "password", translate("Password"))
 o.password = true
 o.rmempty = true
-o:depends("type", "ssr")
 o:depends("type", "ss")
 o:depends("type", "trojan")
-
-o = s:option(ListValue, "encrypt_method", translate("Encrypt Method"))
-for _, v in ipairs(encrypt_methods) do o:value(v) end
-o.rmempty = true
-o:depends("type", "ssr")
 
 o = s:option(ListValue, "encrypt_method_ss", translate("Encrypt Method"))
 for _, v in ipairs(encrypt_methods_ss) do o:value(v) end
 o.rmempty = true
 o:depends("type", "ss")
 
-o = s:option(ListValue, "protocol", translate("Protocol"))
-for _, v in ipairs(protocol) do o:value(v) end
+o = s:option(ListValue, "plugin", translate("plugin"))
+for _, v in ipairs(plugins) do o:value(v) end
 o.rmempty = true
-o:depends("type", "ssr")
+o:depends("type", "ss")
 
-o = s:option(Value, "protocol_param", translate("Protocol param(optional)"))
-o:depends("type", "ssr")
-
-o = s:option(ListValue, "obfs", translate("Obfs"))
-for _, v in ipairs(obfs) do o:value(v) end
-o.rmempty = true
-o:depends("type", "ssr")
-
-o = s:option(Value, "obfs_param", translate("Obfs param(optional)"))
-o:depends("type", "ssr")
+o = s:option(Value, "plugin_opts", translate("Plugin Options(optional)"))
+o:depends("type", "ss")
 
 -- AlterId
 o = s:option(Value, "alter_id", translate("AlterId"))
@@ -363,7 +316,6 @@ o:depends("mux", "1")
 o = s:option(Flag, "fast_open", translate("TCP Fast Open"))
 o.rmempty = true
 o.default = "0"
-o:depends("type", "ssr")
 o:depends("type", "ss")
 
 o = s:option(Flag, "switch_enable", translate("Enable Auto Switch"))
@@ -380,7 +332,6 @@ if nixio.fs.access("/usr/bin/kcptun-c") then
 kcp_enable = s:option(Flag, "kcp_enable", translate("KcpTun Enable"), translate("bin:/usr/bin/kcptun-c"))
 kcp_enable.rmempty = true
 kcp_enable.default = "0"
-kcp_enable:depends("type", "ssr")
 kcp_enable:depends("type", "ss")
 
 o = s:option(Value, "kcp_port", translate("KcpTun Port"))
@@ -399,17 +350,14 @@ function o.validate(self, value, section)
 
 	return value
 end
-o:depends("type", "ssr")
 o:depends("type", "ss")
 
 o = s:option(Value, "kcp_password", translate("KcpTun Password"))
 o.password = true
-o:depends("type", "ssr")
 o:depends("type", "ss")
 
 o = s:option(Value, "kcp_param", translate("KcpTun Param"))
 o.default = "--nocomp"
-o:depends("type", "ssr")
 o:depends("type", "ss")
 
 end

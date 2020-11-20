@@ -27,13 +27,7 @@ config access_control
 	list wan_fw_ips '91.108.56.0/22'
 	list wan_fw_ips '109.239.140.0/24'
 
-config server_global
-	option enable_server '0'
-
 config server_subscribe
 	option proxy '0'
 	option auto_update_time '2'
 	option auto_update '1'
-
-
-

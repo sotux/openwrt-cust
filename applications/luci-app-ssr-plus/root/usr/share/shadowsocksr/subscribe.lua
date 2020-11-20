@@ -106,28 +106,7 @@ local function processData(szType, content)
 		kcp_param = '--nocomp'
 	}
 	result.hashkey = type(content) == 'string' and md5(content) or md5(jsonStringify(content))
-	if szType == 'ssr' then
-		local dat = split(content, "/\\?")
-		local hostInfo = split(dat[1], ':')
-		result.server = hostInfo[1]
-		result.server_port = hostInfo[2]
-		result.protocol = hostInfo[3]
-		result.encrypt_method = hostInfo[4]
-		result.obfs = hostInfo[5]
-		result.password = base64Decode(hostInfo[6])
-		local params = {}
-		for _, v in pairs(split(dat[2], '&')) do
-			local t = split(v, '=')
-			params[t[1]] = t[2]
-		end
-		result.obfs_param = base64Decode(params.bfsparam)
-		result.protocol_param = base64Decode(params.protoparam)
-		local group = base64Decode(params.group)
-		if group then
-			result.alias = "["  .. group .. "] "
-		end
-		result.alias = result.alias .. base64Decode(params.remarks)
-	elseif szType == 'vmess' then
+	if szType == 'vmess' then
 		local info = jsonParse(content)
 		result.type = 'v2ray'
 		result.server = info.add
