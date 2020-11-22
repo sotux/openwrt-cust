@@ -13,7 +13,7 @@ define Package/luci-app-ssr-plus
 	TITLE:=SS/SSR/V2Ray/Trojan LuCI interface
 	PKGARCH:=all
 	DEPENDS:=+ipset +ip-full +iptables-mod-tproxy +dnsmasq-full +coreutils +coreutils-base64 +wget +lua \
-	+shadowsocks-libev-ss-redir +trojan +ipt2socks +v2ray-plugin +simple-obfs +kcptun-c +pdnsd-alt
+	+shadowsocks-libev +trojan +ipt2socks +v2ray-plugin +simple-obfs +kcptun-c +pdnsd-alt
 endef
 
 define Build/Prepare
