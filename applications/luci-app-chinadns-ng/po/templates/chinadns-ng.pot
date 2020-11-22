@@ -1,0 +1,72 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:31
+msgid "DNS server in China"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:16
+msgid "Enable"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:13
+msgid "General Setting"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:19
+msgid "Listen Address"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:25
+msgid "Listen Port"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:10
+msgid "NOT RUNNING"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:8
+msgid "RUNNING"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:36
+msgid "Trusted DNS server"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/controller/chinadns-ng.lua:12
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:8
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:10
+msgid "chinadns-ng"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:47
+msgid "chnlist_file"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:63
+msgid "chnlist_first"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:68
+msgid "fair_mode"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:41
+msgid "gfwlist_file"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:78
+msgid "noip_as_chnip"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:58
+msgid "repeat_times"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:73
+msgid "reuse_port"
+msgstr ""
+
+#: applications/luci-app-chinadns-ng/luasrc/model/cbi/chinadns-ng.lua:53
+msgid "timeout_sec"
+msgstr ""
