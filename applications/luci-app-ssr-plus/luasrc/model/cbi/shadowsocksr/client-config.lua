@@ -1,7 +1,6 @@
 -- Copyright (C) 2017 yushi studio <ywb94@qq.com> github.com/ywb94
 -- Licensed to the public under the GNU General Public License v3.
-
-local m, s, o,kcp_enable
+local m, s, o, kcp_enable
 local shadowsocksr = "shadowsocksr"
 local uci = luci.model.uci.cursor()
 local fs = require "nixio.fs"
@@ -10,19 +9,16 @@ local sid = arg[1]
 local uuid = luci.sys.exec("cat /proc/sys/kernel/random/uuid")
 
 local function isKcptun(file)
-	if not fs.access(file, "rwx", "rx", "rx") then
-		fs.chmod(file, 755)
-	end
+    if not fs.access(file, "rwx", "rx", "rx") then fs.chmod(file, 755) end
 
-	local str = sys.exec(file .. " -v | awk '{printf $1}'")
-	return (str:lower() == "kcptun")
+    local str = sys.exec(file .. " -v | awk '{printf $1}'")
+    return (str:lower() == "kcptun")
 end
-
 
 local server_table = {}
 
 local encrypt_methods_ss = {
-	-- aead
+    -- aead
 	"aes-128-gcm",
 	"aes-192-gcm",
 	"aes-256-gcm",
@@ -44,7 +40,7 @@ local encrypt_methods_ss = {
 	"camellia-256-cfb",
 	"salsa20",
 	"chacha20",
-	"chacha20-ietf",
+    "chacha20-ietf"
 }
 
 local protocol = {
@@ -58,53 +54,46 @@ local protocol = {
 	"auth_chain_c",
 	"auth_chain_d",
 	"auth_chain_e",
-	"auth_chain_f",
+	"auth_chain_f"
 }
 
 local plugins = {""}
 if nixio.fs.access("/usr/bin/obfs-local") then
-	table.insert(plugins, "obfs-local")
+    table.insert(plugins, "obfs-local")
 end
 if nixio.fs.access("/usr/bin/v2ray-plugin") then
-	table.insert(plugins, "v2ray-plugin")
+    table.insert(plugins, "v2ray-plugin")
 end
 
-local securitys = {
-	"auto",
-	"none",
-	"aes-128-gcm",
-	"chacha20-poly1305"
-}
-
+local securitys = {"auto", "none", "aes-128-gcm", "chacha20-poly1305"}
 
 m = Map(shadowsocksr, translate("Edit ShadowSocksR Server"))
 m.redirect = luci.dispatcher.build_url("admin/services/shadowsocksr/servers")
 if m.uci:get(shadowsocksr, sid) ~= "servers" then
-	luci.http.redirect(m.redirect)
-	return
+    luci.http.redirect(m.redirect)
+    return
 end
 
 -- [[ Servers Setting ]]--
 s = m:section(NamedSection, sid, "servers")
 s.anonymous = true
-s.addremove   = false
+s.addremove = false
 
-o = s:option(DummyValue,"ssr_url","SS/V2RAY/TROJAN URL")
-o.rawhtml  = true
+o = s:option(DummyValue, "ssr_url", "SS/V2RAY/TROJAN URL")
+o.rawhtml = true
 o.template = "shadowsocksr/ssrurl"
-o.value =sid
+o.value = sid
 
 o = s:option(ListValue, "type", translate("Server Node Type"))
 if nixio.fs.access("/usr/bin/ss-redir") then
-	o:value("ss", translate("Shadowsocks-libev"))
+    o:value("ss", translate("Shadowsocks-libev"))
 end
 if nixio.fs.access("/usr/bin/v2ray/v2ray") or nixio.fs.access("/usr/bin/v2ray") then
-	o:value("v2ray", translate("V2Ray"))
+    o:value("v2ray", translate("V2Ray"))
 end
-if nixio.fs.access("/usr/bin/trojan") then
-	o:value("trojan", translate("Trojan"))
-end
-o.description = translate("Using incorrect encryption mothod may causes service fail to start")
+if nixio.fs.access("/usr/bin/trojan") then o:value("trojan", translate("Trojan")) end
+o.description = translate(
+                    "Using incorrect encryption mothod may causes service fail to start")
 
 o = s:option(Value, "alias", translate("Alias(optional)"))
 
@@ -296,7 +285,7 @@ o:depends("type", "v2ray")
 o:depends("type", "trojan")
 
 o = s:option(Value, "tls_host", translate("TLS Host"))
---o:depends("type", "trojan")
+-- o:depends("type", "trojan")
 o:depends("tls", "1")
 o.rmempty = true
 
@@ -329,36 +318,37 @@ o.rmempty = false
 
 if nixio.fs.access("/usr/bin/kcptun-c") then
 
-kcp_enable = s:option(Flag, "kcp_enable", translate("KcpTun Enable"), translate("bin:/usr/bin/kcptun-c"))
-kcp_enable.rmempty = true
-kcp_enable.default = "0"
-kcp_enable:depends("type", "ss")
+    kcp_enable = s:option(Flag, "kcp_enable", translate("KcpTun Enable"),
+                          translate("bin:/usr/bin/kcptun-c"))
+    kcp_enable.rmempty = true
+    kcp_enable.default = "0"
+    kcp_enable:depends("type", "ss")
 
-o = s:option(Value, "kcp_port", translate("KcpTun Port"))
-o.datatype = "port"
-o.default = 4000
-function o.validate(self, value, section)
-		local kcp_file="/usr/bin/kcptun-c"
-		local enable = kcp_enable:formvalue(section) or kcp_enable.disabled
-		if enable == kcp_enable.enabled then
-	if not fs.access(kcp_file)  then
-		return nil, translate("Haven't a Kcptun executable file")
-	elseif  not isKcptun(kcp_file) then
-		return nil, translate("Not a Kcptun executable file")
-	end
-	end
+    o = s:option(Value, "kcp_port", translate("KcpTun Port"))
+    o.datatype = "port"
+    o.default = 4000
+    function o.validate(self, value, section)
+        local kcp_file = "/usr/bin/kcptun-c"
+        local enable = kcp_enable:formvalue(section) or kcp_enable.disabled
+        if enable == kcp_enable.enabled then
+            if not fs.access(kcp_file) then
+                return nil, translate("Haven't a Kcptun executable file")
+            elseif not isKcptun(kcp_file) then
+                return nil, translate("Not a Kcptun executable file")
+            end
+        end
 
-	return value
-end
-o:depends("type", "ss")
+        return value
+    end
+    o:depends("type", "ss")
 
-o = s:option(Value, "kcp_password", translate("KcpTun Password"))
-o.password = true
-o:depends("type", "ss")
+    o = s:option(Value, "kcp_password", translate("KcpTun Password"))
+    o.password = true
+    o:depends("type", "ss")
 
-o = s:option(Value, "kcp_param", translate("KcpTun Param"))
-o.default = "--nocomp"
-o:depends("type", "ss")
+    o = s:option(Value, "kcp_param", translate("KcpTun Param"))
+    o.default = "--nocomp"
+    o:depends("type", "ss")
 
 end
 

@@ -7,7 +7,6 @@
 # See /LICENSE for more information.
 #
 
-
 NAME=shadowsocksr
 
 uci_get_by_name() {
@@ -27,8 +26,8 @@ tunnel_process=$4
 kcp_process=$5
 local_process=$6
 pdnsd_process=$7
-if  [ -z "$pdnsd_process" ] ;then
-pdnsd_process=0
+if [ -z "$pdnsd_process" ]; then
+	pdnsd_process=0
 fi
 
 i=0
@@ -41,66 +40,63 @@ password=$(uci_get_by_name $GLOBAL_SERVER kcp_password)
 kcp_param=$(uci_get_by_name $GLOBAL_SERVER kcp_param)
 [ "$password" != "" ] && password="--key "${password}
 
-if echo $server|grep -E "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$">/dev/null; then
+if echo $server | grep -E "^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$" >/dev/null; then
 	server=${server}
-	else
-	server=`cat /etc/ssr_ip`
+else
+	server=$(cat /etc/ssr_ip)
 fi
 
-while [ "1" = "1" ]  #死循环
-do
-   sleep 30
-#redir tcp
-			if [ $redir_tcp_process -gt 0 ] ;then
-			icount=`busybox ps -w | grep ssr-retcp |grep -v grep| wc -l`
-			if [ $icount = 0 ] ;then
+while [ "1" = "1" ]; do #死循环
+	sleep 30
+	#redir tcp
+	if [ $redir_tcp_process -gt 0 ]; then
+		icount=$(busybox ps -w | grep ssr-retcp | grep -v grep | wc -l)
+		if [ $icount = 0 ]; then
 			logger -t "$NAME" "ssr redir tcp error.restart!"
 			/etc/init.d/shadowsocksr restart
 			exit 0
-			fi
-			fi
-#redir udp
-			if [ $redir_udp_process -gt 0 ] ;then
-			icount=`busybox ps -w  | grep ssr-reudp|grep -v grep| wc -l`
-			if [ $icount = 0 ] ;then
+		fi
+	fi
+	#redir udp
+	if [ $redir_udp_process -gt 0 ]; then
+		icount=$(busybox ps -w | grep ssr-reudp | grep -v grep | wc -l)
+		if [ $icount = 0 ]; then
 			logger -t "$NAME" "ssr redir udp error.restart!"
-			 /etc/init.d/shadowsocksr restart
+			/etc/init.d/shadowsocksr restart
 			exit 0
-			fi
-			fi
-#tunnel
-			if [ $tunnel_process -gt 0 ] ;then
-			icount=`busybox ps -w  | grep ssr-tunnel |grep -v grep| wc -l`
-			if [ $icount = 0 ] ;then
+		fi
+	fi
+	#tunnel
+	if [ $tunnel_process -gt 0 ]; then
+		icount=$(busybox ps -w | grep ssr-tunnel | grep -v grep | wc -l)
+		if [ $icount = 0 ]; then
 			logger -t "$NAME" "ssr tunnel error.restart!"
-			 /etc/init.d/shadowsocksr restart
+			/etc/init.d/shadowsocksr restart
 			exit 0
-			fi
-			fi
-#kcptun
-		if [ $kcp_process -gt 0 ] ;then
-		icount=`busybox ps -w  | grep kcptun-c |grep -v grep| wc -l`
-		if [ $icount -lt $kcp_process ]  #如果进程挂掉就重启它
-		then
-		logger -t "$NAME" "ssr kcptun error.restart!"
-		killall -q -9 kcptun-c
+		fi
+	fi
+	#kcptun
+	if [ $kcp_process -gt 0 ]; then
+		icount=$(busybox ps -w | grep kcptun-c | grep -v grep | wc -l)
+		if [ $icount -lt $kcp_process ]; then #如果进程挂掉就重启它
+			logger -t "$NAME" "ssr kcptun error.restart!"
+			killall -q -9 kcptun-c
 
-			( /usr/bin/kcptun-c -r $server:$kcp_port -l :$server_port  $password $kcp_param &)
+			(/usr/bin/kcptun-c -r $server:$kcp_port -l :$server_port $password $kcp_param &)
 		fi
-		fi
-#pdnsd
-		if [ $pdnsd_process -gt 0 ] ;then
-		icount=`busybox ps -w  | grep pdnsd |grep -v grep| wc -l`
-		if [ $icount -lt $pdnsd_process ]  #如果进程挂掉就重启它
-		then
-		logger -t "$NAME" "pdnsd tunnel error.restart!"
-		if [ -f /var/run/pdnsd.pid ] ;then
-		kill $(cat /var/run/pdnsd.pid) >/dev/null 2>&1
-		else
-		kill -9 $(ps | grep pdnsd | grep -v grep | awk '{print $1}') >/dev/null 2>&1
-		fi
+	fi
+	#pdnsd
+	if [ $pdnsd_process -gt 0 ]; then
+		icount=$(busybox ps -w | grep pdnsd | grep -v grep | wc -l)
+		if [ $icount -lt $pdnsd_process ]; then #如果进程挂掉就重启它
+			logger -t "$NAME" "pdnsd tunnel error.restart!"
+			if [ -f /var/run/pdnsd.pid ]; then
+				kill $(cat /var/run/pdnsd.pid) >/dev/null 2>&1
+			else
+				kill -9 $(ps | grep pdnsd | grep -v grep | awk '{print $1}') >/dev/null 2>&1
+			fi
 
-		( /usr/sbin/pdnsd -c /var/etc/pdnsd.conf -d &)
+			(/usr/sbin/pdnsd -c /var/etc/pdnsd.conf -d &)
 		fi
-		fi
+	fi
 done

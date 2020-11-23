@@ -3,22 +3,24 @@ local uci = luci.model.uci.cursor()
 local server_table = {}
 
 uci:foreach(shadowsocksr, "servers", function(s)
-	if s.alias then
-		server_table[s[".name"]] = "[%s]:%s" %{string.upper(s.type), s.alias}
-	elseif s.server and s.server_port then
-		server_table[s[".name"]] = "[%s]:%s:%s" %{string.upper(s.type), s.server, s.server_port}
-	end
+    if s.alias then
+        server_table[s[".name"]] = "[%s]:%s" % {string.upper(s.type), s.alias}
+    elseif s.server and s.server_port then
+        server_table[s[".name"]] = "[%s]:%s:%s" %
+                                       {
+                string.upper(s.type), s.server, s.server_port
+            }
+    end
 end)
 
 local key_table = {}
-for key,_ in pairs(server_table) do
-	table.insert(key_table,key)
-end
+for key, _ in pairs(server_table) do table.insert(key_table, key) end
 
 table.sort(key_table)
 m = Map(shadowsocksr)
 -- [[ global ]]--
-s = m:section(TypedSection, "global", translate("Server failsafe auto swith settings"))
+s = m:section(TypedSection, "global",
+              translate("Server failsafe auto swith settings"))
 s.anonymous = true
 
 o = s:option(Flag, "monitor_enable", translate("Enable Process Deamon"))
