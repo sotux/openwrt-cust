@@ -1,10 +1,9 @@
 <%+cbi/valueheader%>
 <script type="text/javascript">//<![CDATA[
-
 	function check_port(btn)
 	{
 		btn.disabled = true;
-		btn.value = '<%:Check...%>';
+		btn.value    = '<%:Check...%>';
 		XHR.get('<%=luci.dispatcher.build_url("admin", "services", "shadowsocksr","checkport")%>',
 			null,
 			function(x,rv)

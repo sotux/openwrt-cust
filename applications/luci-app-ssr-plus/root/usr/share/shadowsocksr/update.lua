@@ -4,107 +4,195 @@
 -- This file is part of the luci-app-ssr-plus update.lua
 -- By Mattraks
 ------------------------------------------------
-require 'nixio'
-require 'luci.util'
-require 'luci.jsonc'
-require 'luci.sys'
+require "luci.sys"
+require "luci.model.uci"
 local icount = 0
-local ucic = luci.model.uci.cursor()
+local args = arg[1]
+local uci = luci.model.uci.cursor()
+local TMP_DNSMASQ_PATH = "/var/etc/dnsmasq-ssrplus.d"
+local TMP_PATH = "/var/etc/ssrplus"
+-- match comments/title/whitelist/ip address/excluded_domain
+local comment_pattern = "^[!\\[@]+"
+local ip_pattern = "^%d+%.%d+%.%d+%.%d+"
+local domain_pattern = "([%w%-%_]+%.[%w%.%-%_]+)[%/%*]*"
+local excluded_domain = {"apple.com", "sina.cn", "sina.com.cn", "baidu.com", "byr.cn", "jlike.com", "weibo.com", "zhongsou.com", "youdao.com", "sogou.com", "so.com", "soso.com", "aliyun.com", "taobao.com", "jd.com", "qq.com"}
+-- gfwlist parameter
+local mydnsip = '127.0.0.1'
+local mydnsport = '5335'
+local ipsetname = 'gfwlist'
+local bc = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+-- base64decoding
+local function base64_dec(data)
+	data = string.gsub(data, '[^' .. bc .. '=]', '')
+	return (data:gsub('.', function(x)
+		if (x == '=') then
+			return ''
+		end
+		local r, f = '', (bc:find(x) - 1)
+		for i = 6, 1, -1 do
+			r = r .. (f % 2 ^ i - f % 2 ^ (i - 1) > 0 and '1' or '0')
+		end
+		return r;
+	end):gsub('%d%d%d?%d?%d?%d?%d?%d?', function(x)
+		if (#x ~= 8) then
+			return ''
+		end
+		local c = 0
+		for i = 1, 8 do
+			c = c + (x:sub(i, i) == '1' and 2 ^ (8 - i) or 0)
+		end
+		return string.char(c)
+	end))
+end
+-- check excluded domain
+local function check_excluded_domain(value)
+	for k, v in ipairs(excluded_domain) do
+		if value:find(v) then
+			return true
+		end
+	end
+end
+-- gfwlist转码至dnsmasq格式
+local function generate_gfwlist(type)
+	local domains = {}
+	local out = io.open("/tmp/ssr-update." .. type, "w")
+	for line in io.lines("/tmp/ssr-update.tmp") do
+		if not (string.find(line, comment_pattern) or string.find(line, ip_pattern) or check_excluded_domain(line)) then
+			local start, finish, match = string.find(line, domain_pattern)
+			if (start) then
+				domains[match] = true
+			end
+		end
+	end
+	for k, v in pairs(domains) do
+		out:write(string.format("server=/%s/%s#%s\n", k, mydnsip, mydnsport))
+		out:write(string.format("ipset=/%s/%s\n", k, ipsetname))
+	end
+	out:close()
+	os.remove("/tmp/ssr-update.tmp")
+end
+
+-- adblock转码至dnsmasq格式
+local function generate_adblock(type)
+	local domains = {}
+	local out = io.open("/tmp/ssr-update." .. type, "w")
+	for line in io.lines("/tmp/ssr-update.tmp") do
+		if not (string.find(line, comment_pattern)) then
+			local start, finish, match = string.find(line, domain_pattern)
+			if (start) then
+				domains[match] = true
+			end
+		end
+	end
+	for k, v in pairs(domains) do
+		out:write(string.format("address=/%s/\n", k))
+	end
+	out:close()
+	os.remove("/tmp/ssr-update.tmp")
+end
 
 local log = function(...)
-    print(os.date("%Y-%m-%d %H:%M:%S ") .. table.concat({...}, " "))
+	if args then
+		print("{ret=" .. table.concat({...}, ",retcount=") .. "}")
+	else
+		print(os.date("%Y-%m-%d %H:%M:%S ") .. table.concat({...}, " "))
+	end
 end
 
-log('正在更新【GFW列表】数据库')
-if nixio.fs.access("/usr/bin/wget-ssl") then
-    refresh_cmd =
-        "wget-ssl --no-check-certificate https://cdn.jsdelivr.net/gh/gfwlist/gfwlist/gfwlist.txt -O /tmp/gfw.b64"
-else
-    refresh_cmd = "wget -O /tmp/gfw.b64 http://iytc.net/tools/list.b64"
-end
-sret = luci.sys.call(refresh_cmd .. " 2>/dev/null")
-if sret == 0 then
-    luci.sys.call("/usr/bin/ssr-gfw")
-    icount = luci.sys.exec("cat /tmp/gfwnew.txt | wc -l")
-    if tonumber(icount) > 1000 then
-        oldcount = luci.sys.exec("cat /etc/dnsmasq.ssr/gfw_list.conf | wc -l")
-        if tonumber(icount) ~= tonumber(oldcount) then
-            luci.sys
-                .exec("cp -f /tmp/gfwnew.txt /etc/dnsmasq.ssr/gfw_list.conf")
-            --			retstring=tostring(math.ceil(tonumber(icount)/2))
-            log('更新成功！ 新的总纪录数：' .. icount)
-        else
-            log('你已经是最新数据，无需更新！')
-        end
-    else
-        log('更新失败！')
-    end
-    luci.sys.exec("rm -f /tmp/gfwnew.txt")
-else
-    log('更新失败！')
+local function update(url, file, type, file2)
+	local Num = 1
+	local refresh_cmd = "wget --no-check-certificate -q -O /tmp/ssr-update." .. type .. " " .. url
+	local sret = luci.sys.call(refresh_cmd)
+	if sret == 0 then
+		if type == "gfw_data" then
+			local gfwlist = io.open("/tmp/ssr-update." .. type, "r")
+			local decode = gfwlist:read("*a")
+			if not decode:find("google") then
+				decode = base64_dec(decode)
+			end
+			gfwlist:close()
+			-- 写回gfwlist
+			gfwlist = io.open("/tmp/ssr-update.tmp", "w")
+			gfwlist:write(decode)
+			gfwlist:close()
+			generate_gfwlist(type)
+			Num = 2
+		end
+		if type == "ad_data" then
+			local adblock = io.open("/tmp/ssr-update." .. type, "r")
+			local decode = adblock:read("*a")
+			if decode:find("address=") then
+				adblock:close()
+			else
+				adblock:close()
+				-- 写回adblock
+				adblock = io.open("/tmp/ssr-update.tmp", "w")
+				adblock:write(decode)
+				adblock:close()
+				generate_adblock(type)
+			end
+		end
+		local new_md5 = luci.sys.exec("echo -n $([ -f '/tmp/ssr-update." .. type .. "' ] && md5sum /tmp/ssr-update." .. type .. " | awk '{print $1}')")
+		local old_md5 = luci.sys.exec("echo -n $([ -f '" .. file .. "' ] && md5sum " .. file .. " | awk '{print $1}')")
+		if new_md5 == old_md5 then
+			if args then
+				log(1)
+			else
+				log("你已经是最新数据，无需更新！")
+			end
+		else
+			icount = luci.sys.exec("cat /tmp/ssr-update." .. type .. " | wc -l")
+			luci.sys.exec("cp -f /tmp/ssr-update." .. type .. " " .. file)
+			if file2 then
+				luci.sys.exec("cp -f /tmp/ssr-update." .. type .. " " .. file2)
+			end
+			if type == "gfw_data" or type == "ad_data" then
+				luci.sys.call("/usr/share/shadowsocksr/gfw2ipset.sh")
+			else
+				luci.sys.call("/usr/share/shadowsocksr/chinaipset.sh " .. TMP_PATH .. "/china_ssr.txt")
+			end
+			if args then
+				log(0, tonumber(icount) / Num)
+			else
+				log("更新成功！ 新的总纪录数：" .. tostring(tonumber(icount) / Num))
+			end
+		end
+	else
+		if args then
+			log(-1)
+		else
+			log("更新失败！")
+		end
+	end
+	os.remove("/tmp/ssr-update." .. type)
 end
 
-log('正在更新【国内IP段】数据库')
-refresh_cmd =
-    "wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest'  2>/dev/null| awk -F\\| '/CN\\|ipv4/ { printf(\"%s/%d\\n\", $4, 32-log($5)/log(2)) }' > /tmp/china_ssr.txt"
-sret = luci.sys.call(refresh_cmd)
-icount = luci.sys.exec("cat /tmp/china_ssr.txt | wc -l")
-if sret == 0 then
-    icount = luci.sys.exec("cat /tmp/china_ssr.txt | wc -l")
-    if tonumber(icount) > 1000 then
-        oldcount = luci.sys.exec("cat /etc/china_ssr.txt | wc -l")
-        if tonumber(icount) ~= tonumber(oldcount) then
-            luci.sys.exec("cp -f /tmp/china_ssr.txt /etc/china_ssr.txt")
-            --			retstring=tostring(math.ceil(tonumber(icount)/2))
-            log('更新成功！ 新的总纪录数：' .. icount)
-        else
-            log('你已经是最新数据，无需更新！')
-        end
-    else
-        log('更新失败！')
-    end
-    luci.sys.exec("rm -f /tmp/china_ssr.txt")
+if args then
+	if args == "gfw_data" then
+		update(uci:get_first("shadowsocksr", "global", "gfwlist_url"), "/etc/ssrplus/gfw_list.conf", args, TMP_DNSMASQ_PATH .. "/gfw_list.conf")
+		os.exit(0)
+	end
+	if args == "ip_data" then
+		update(uci:get_first("shadowsocksr", "global", "chnroute_url"), "/etc/ssrplus/china_ssr.txt", args, TMP_PATH .. "/china_ssr.txt")
+		os.exit(0)
+	end
+	if args == "ad_data" then
+		update(uci:get_first("shadowsocksr", "global", "adblock_url"), "/etc/ssrplus/ad.conf", args, TMP_DNSMASQ_PATH .. "/ad.conf")
+		os.exit(0)
+	end
+	if args == "nfip_data" then
+		update(uci:get_first("shadowsocksr", "global", "nfip_url"), "/etc/ssrplus/netflixip.list", args)
+		os.exit(0)
+	end
 else
-    log('更新失败！')
+	log("正在更新【GFW列表】数据库")
+	update(uci:get_first("shadowsocksr", "global", "gfwlist_url"), "/etc/ssrplus/gfw_list.conf", "gfw_data", TMP_DNSMASQ_PATH .. "/gfw_list.conf")
+	log("正在更新【国内IP段】数据库")
+	update(uci:get_first("shadowsocksr", "global", "chnroute_url"), "/etc/ssrplus/china_ssr.txt", "ip_data", TMP_PATH .. "/china_ssr.txt")
+	if uci:get_first("shadowsocksr", "global", "adblock", "0") == "1" then
+		log("正在更新【广告屏蔽】数据库")
+		update(uci:get_first("shadowsocksr", "global", "adblock_url"), "/etc/ssrplus/ad.conf", "ad_data", TMP_DNSMASQ_PATH .. "/ad.conf")
+	end
+	-- log("正在更新【Netflix IP段】数据库")
+	-- update(uci:get_first("shadowsocksr", "global", "nfip_url"), "/etc/ssrplus/netflixip.list", "nfip_data")
 end
-
--- --[[
-if ucic:get_first('shadowsocksr', 'global', 'adblock', '') == '1' then
-    log('正在更新【广告屏蔽】数据库')
-    local need_process = 0
-    if nixio.fs.access("/usr/bin/wget-ssl") then
-        refresh_cmd =
-            "wget-ssl --no-check-certificate -O - https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt > /tmp/adnew.conf"
-        need_process = 1
-    else
-        refresh_cmd = "wget -O /tmp/ad.conf http://iytc.net/tools/ad.conf"
-    end
-    sret = luci.sys.call(refresh_cmd .. " 2>/dev/null")
-    if sret == 0 then
-        if need_process == 1 then luci.sys.call("/usr/bin/ssr-ad") end
-        icount = luci.sys.exec("cat /tmp/ad.conf | wc -l")
-        if tonumber(icount) > 1000 then
-            if nixio.fs.access("/etc/dnsmasq.ssr/ad.conf") then
-                oldcount = luci.sys.exec("cat /etc/dnsmasq.ssr/ad.conf | wc -l")
-            else
-                oldcount = 0
-            end
-            if tonumber(icount) ~= tonumber(oldcount) then
-                luci.sys.exec("cp -f /tmp/ad.conf /etc/dnsmasq.ssr/ad.conf")
-                --		retstring=tostring(math.ceil(tonumber(icount)))
-                if oldcount == 0 then
-                    luci.sys.call("/etc/init.d/dnsmasq restart")
-                end
-                log('更新成功！ 新的总纪录数：' .. icount)
-            else
-                log('你已经是最新数据，无需更新！')
-            end
-        else
-            log('更新失败！')
-        end
-        luci.sys.exec("rm -f /tmp/ad.conf")
-    else
-        log('更新失败！')
-    end
-end
--- --]]
