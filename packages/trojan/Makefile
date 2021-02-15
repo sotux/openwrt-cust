@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018-2020 wongsyrone
+# Copyright (C) 2018-2019 wongsyrone
 #
 # This is free software, licensed under the GNU General Public License v3.
 # See /LICENSE for more information.
@@ -15,11 +15,13 @@ PKG_SOURCE_URL:=https://github.com/trojan-gfw/trojan.git
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_VERSION:=8606b7110fe79f8ab02d60c897f87ffb0a9b23f0
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.gz
-PKG_BUILD_PARALLEL:=0
-PKG_LICENSE:=GPL-3.0
-PKG_MAINTAINER:=GreaterFire
 
 CMAKE_INSTALL:=1
+PKG_BUILD_PARALLEL:=0
+PKG_BUILD_DEPENDS:=openssl
+
+PKG_LICENSE:=GPL-3.0
+PKG_MAINTAINER:=GreaterFire
 
 include $(INCLUDE_DIR)/package.mk
 include $(INCLUDE_DIR)/cmake.mk
@@ -33,17 +35,9 @@ TARGET_LDFLAGS += -flto
 
 # CXX standard
 TARGET_CXXFLAGS += -std=c++11
-
 TARGET_CXXFLAGS := $(filter-out -O%,$(TARGET_CXXFLAGS)) -O3
-
 TARGET_CXXFLAGS += -ffunction-sections -fdata-sections
 TARGET_LDFLAGS += -Wl,--gc-sections
-
-CMAKE_FIND_ROOT_PATH := $(STAGING_DIR)/usr;$(CMAKE_FIND_ROOT_PATH)
-TARGET_CXXFLAGS := -I$(STAGING_DIR)/include $(TARGET_CXXFLAGS)
-TARGET_LDFLAGS := -L$(STAGING_DIR)/lib $(TARGET_LDFLAGS)
-
-
 
 CMAKE_OPTIONS += \
 	-DENABLE_MYSQL=OFF \
@@ -54,31 +48,23 @@ CMAKE_OPTIONS += \
 	-DFORCE_TCP_FASTOPEN=OFF \
 	-DSYSTEMD_SERVICE=OFF \
 	-DOPENSSL_USE_STATIC_LIBS=FALSE \
-	-DBoost_DEBUG=OFF \
+	-DBoost_DEBUG=ON \
 	-DBoost_NO_BOOST_CMAKE=ON
-
-
 
 define Package/trojan
 	SECTION:=net
 	CATEGORY:=Network
+	SUBMENU:=Web Servers/Proxies
 	TITLE:=An unidentifiable mechanism that helps you bypass GFW
 	URL:=https://github.com/trojan-gfw/trojan
-	DEPENDS:=+libpthread +libstdcpp +libubox +libopenssl \
+	DEPENDS:=+libpthread +libstdcpp +libopenssl \
 		+boost +boost-system +boost-program_options +boost-date_time
 endef
 
-
-
 define Package/trojan/install
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/trojan $(1)/usr/bin/trojan
-	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_DATA) ./files/trojan.config $(1)/etc/config/trojan
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) ./files/trojan.init $(1)/etc/init.d/trojan
-	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/etc/trojan/config.json $(1)/etc/trojan.json
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/trojan $(1)/usr/sbin/trojan
 endef
 
-
 $(eval $(call BuildPackage,trojan))
+
