@@ -7,7 +7,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=shadowsocks-libev
+PKG_NAME:=shadowsocks-libev-alt
 PKG_VERSION:=3.3.5
 PKG_RELEASE:=1
 
@@ -38,7 +38,7 @@ PKG_CONFIG_DEPENDS:= \
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/shadowsocks-libev
+define Package/$(PKG_NAME)
 	SECTION:=net
 	CATEGORY:=Network
 	TITLE:=Lightweight Secured Socks5 Proxy
@@ -51,11 +51,11 @@ define Package/shadowsocks-libev
 		+!SHADOWSOCKS_WITH_MBEDTLS:libmbedtls
 endef
 
-Package/shadowsocks-libev-server = $(Package/shadowsocks-libev)
+Package/$(PKG_NAME)-server = $(Package/shadowsocks-libev-alt)
 
-define Package/shadowsocks-libev-server/config
+define Package/$(PKG_NAME)-server/config
 menu "Shadowsocks-libev Compile Configuration"
-	depends on PACKAGE_shadowsocks-libev || PACKAGE_shadowsocks-libev-server
+	depends on PACKAGE_$(PKG_NAME) || PACKAGE_$(PKG_NAME)-server
 	config SHADOWSOCKS_STATIC_LINK
 		bool "enable static link libraries."
 		default n
@@ -85,11 +85,11 @@ menu "Shadowsocks-libev Compile Configuration"
 endmenu
 endef
 
-define Package/shadowsocks-libev/description
+define Package/$(PKG_NAME)/description
 Shadowsocks-libev is a lightweight secured socks5 proxy for embedded devices and low end boxes.
 endef
 
-Package/shadowsocks-libev-server/description = $(Package/shadowsocks-libev/description)
+Package/$(PKG_NAME)-server/description = $(Package/shadowsocks-libev-alt/description)
 
 CONFIGURE_ARGS += \
 	--disable-ssp \
@@ -115,15 +115,15 @@ ifeq ($(CONFIG_SHADOWSOCKS_STATIC_LINK),y)
 	CONFIGURE_ARGS += LDFLAGS="-Wl,-static -static -static-libgcc"
 endif
 
-define Package/shadowsocks-libev/install
+define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/ss-{local,redir,tunnel} $(1)/usr/bin
 endef
 
-define Package/shadowsocks-libev-server/install
+define Package/$(PKG_NAME)-server/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/ss-server $(1)/usr/bin
 endef
 
-$(eval $(call BuildPackage,shadowsocks-libev))
-$(eval $(call BuildPackage,shadowsocks-libev-server))
+$(eval $(call BuildPackage,shadowsocks-libev-alt))
+$(eval $(call BuildPackage,shadowsocks-libev-alt-server))
