@@ -863,7 +863,7 @@ msgstr ""
 
 #: applications/luci-app-ssr-plus/luasrc/controller/shadowsocksr.lua:9
 msgid "ShadowSocksR Plus+"
-msgstr ""
+msgstr "科学上网"
 
 #: applications/luci-app-ssr-plus/luasrc/model/cbi/shadowsocksr/client.lua:6
 msgid "ShadowSocksR Plus+ Settings"
