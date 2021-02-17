@@ -30,7 +30,7 @@ msgid "Config File"
 msgstr "配置文件"
 
 msgid "vlmcsd"
-msgstr "Vlmcsd"
+msgstr "KMS 服务"
 
 msgid "vlmcsd config"
-msgstr "Vlmcsd 设置"
+msgstr "Vlmcsd 配置"
