@@ -48,8 +48,7 @@ LUCI_TITLE:=SS/SSR/V2Ray/Trojan/NaiveProxy/Socks5/Tun LuCI interface
 LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+shadowsocksr-libev-ssr-check +ipset +ip-full +iptables-mod-tproxy +dnsmasq-full +coreutils +coreutils-base64 +pdnsd-alt +wget-ssl +lua +libuci-lua \
 	+microsocks +dns2socks +tcping +resolveip \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks:shadowsocks-libev-ss-local \
-	+PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks:shadowsocks-libev-ss-redir \
+	+PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks:shadowsocks-libev-alt \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_Shadowsocks:simple-obfs \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_V2ray_plugin:v2ray-plugin \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_Xray:xray-core \
