@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=kodexplorer
-PKG_VERSION:=4.36
+PKG_VERSION:=4.39
 PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk

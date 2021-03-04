@@ -1,7 +1,7 @@
 #!/bin/sh
 
 NAME=KodExplorer
-VER=4.36
+VER=4.39
 URL=https://github.com/kalcaddle/KodExplorer/archive
 MNT_DIR=`uci get fstab.@mount[0].target`
 LAN_IP=`uci get network.lan.ipaddr`
