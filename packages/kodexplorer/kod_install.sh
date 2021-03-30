@@ -2,7 +2,7 @@
 
 NAME=KodExplorer
 VER=4.39
-URL=https://github.com/kalcaddle/KodExplorer/archive
+URL=https://github.com/kalcaddle/KodExplorer/archive/refs/tags
 MNT_DIR=`uci get fstab.@mount[0].target`
 LAN_IP=`uci get network.lan.ipaddr`
 KOD_INSTALL_DIR=$MNT_DIR/$NAME
@@ -24,7 +24,7 @@ server {
         root $KOD_INSTALL_DIR;
         index index.php;
     }
-    
+
     location ~ \.php\$ {
         root $KOD_INSTALL_DIR;
         fastcgi_index index.php;
@@ -107,7 +107,7 @@ if [ $? != 0 ]; then
 fi
 
 if [ ! -e $MNT_DIR/$NAME-$VER.tar.gz ]; then
-	echo "Download Kod Explorer failed." 
+	echo "Download Kod Explorer failed."
 else
 	func_install_kodexplorer
 fi
