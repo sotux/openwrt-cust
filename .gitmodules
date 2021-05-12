@@ -1,0 +1,3 @@
+[submodule "applications/luci-app-easymesh"]
+	path = applications/luci-app-easymesh
+	url = https://github.com/ntlf9t/luci-app-easymesh.git
