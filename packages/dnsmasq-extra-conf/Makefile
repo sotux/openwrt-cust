@@ -43,7 +43,8 @@ define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/etc/dnsmasq.d
 	$(INSTALL_CONF) ./files/iptv.conf $(1)/etc/dnsmasq.d/iptv.conf
 	$(INSTALL_CONF) ./files/bogus-nxdomain.china.conf $(1)/etc/dnsmasq.d/bogus-nxdomain.china.conf
-  $(INSTALL_CONF) ./files/iptv_toggle.sh $(1)/usr/bin/iptv_toggle.sh
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) ./files/iptv_toggle.sh $(1)/usr/bin/iptv_toggle.sh
 endef
 
 $(eval $(call BuildPackage,$(PKG_NAME)))
