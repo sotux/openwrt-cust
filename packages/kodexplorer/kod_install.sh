@@ -1,14 +1,14 @@
 #!/bin/sh
 
 NAME=KodExplorer
-VER=4.39
+VER=4.47
 URL=https://github.com/kalcaddle/KodExplorer/archive/refs/tags
 MNT_DIR=`uci get fstab.@mount[0].target`
 LAN_IP=`uci get network.lan.ipaddr`
 KOD_INSTALL_DIR=$MNT_DIR/$NAME
 DATA_DIR=$MNT_DIR/data
 NGINX_CONF_NAME=$NAME.conf
-PHP7_FPM_CONF_NAME=$NAME.conf
+PHP8_FPM_CONF_NAME=$NAME.conf
 
 func_generate_nginx_conf()
 {
@@ -29,20 +29,20 @@ server {
         root $KOD_INSTALL_DIR;
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-        fastcgi_pass unix:/var/run/$NAME-php7-fpm.sock;
+        fastcgi_pass unix:/var/run/$NAME-php8-fpm.sock;
         include fastcgi_params;
     }
 }
 EOF
 }
 
-func_generate_php7_fpm_conf()
+func_generate_php8_fpm_conf()
 {
-	cat > "/etc/php7-fpm.d/$PHP7_FPM_CONF_NAME" <<EOF
+	cat > "/etc/php8-fpm.d/$PHP8_FPM_CONF_NAME" <<EOF
 [$NAME]
 user = nobody
 group = nogroup
-listen = /var/run/$NAME-php7-fpm.sock
+listen = /var/run/$NAME-php8-fpm.sock
 listen.mode = 0666
 listen.allowed_clients = 127.0.0.1
 pm = dynamic
@@ -80,9 +80,9 @@ func_install_kodexplorer()
 	chmod 775 -R $DATA_DIR
 
 	func_generate_nginx_conf
-	func_generate_php7_fpm_conf
+	func_generate_php8_fpm_conf
 
-	/etc/init.d/php7-fpm restart
+	/etc/init.d/php8-fpm restart
 	/etc/init.d/nginx restart
 
 	echo "Kod Explorer install finished. Please visit http://$LAN_IP:8080"

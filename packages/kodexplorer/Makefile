@@ -8,8 +8,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=kodexplorer
-PKG_VERSION:=4.39
-PKG_RELEASE:=4
+PKG_VERSION:=4.47
+PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -19,9 +19,8 @@ define Package/kodexplorer
   SUBMENU:=File Transfer
 	TITLE:=Kod Explorer
 	URL:=https://kodcloud.com
-	DEPENDS:=+nginx-all-module +php7 +php7-fastcgi +php7-fpm +php7-mod-curl +php7-mod-gd +php7-mod-iconv \
-		+php7-mod-json +php7-mod-mbstring +php7-mod-opcache +php7-mod-session +php7-mod-zip \
-		+zoneinfo-core +zoneinfo-asia
+	DEPENDS:=+nginx-all-module +php8 +php8-fastcgi +php8-fpm +php8-mod-curl +php8-mod-gd +php8-mod-iconv \
+		+php8-mod-mbstring +php8-mod-opcache +php8-mod-session +php8-mod-zip +zoneinfo-core +zoneinfo-asia
 endef
 
 define Package/kodexplorer/description
