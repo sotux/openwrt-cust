@@ -13,7 +13,7 @@ PKG_MAINTAINER:=cokebar <cokebar@cokebar.info>
 PKG_LICENSE:=MIT
 
 LUCI_TITLE:=LuCI Support for vlmcsd
-LUCI_DEPENDS:=+vlmcsd
+LUCI_DEPENDS:=+vlmcsd +luci-compat
 LUCI_PKGARCH:=all
 
 include ../../luci.mk
