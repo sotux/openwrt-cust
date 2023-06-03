@@ -19,7 +19,7 @@ define Package/kodexplorer
   SUBMENU:=File Transfer
 	TITLE:=Kod Explorer
 	URL:=https://kodcloud.com
-	DEPENDS:=+nginx-all-module +php8 +php8-fastcgi +php8-fpm +php8-mod-curl +php8-mod-gd +php8-mod-iconv \
+	DEPENDS:=+nginx-full +php8 +php8-fastcgi +php8-fpm +php8-mod-curl +php8-mod-gd +php8-mod-iconv \
 		+php8-mod-mbstring +php8-mod-opcache +php8-mod-session +php8-mod-zip +zoneinfo-core +zoneinfo-asia
 endef
 
