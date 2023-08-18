@@ -37,7 +37,8 @@ define Package/v2raya-alt
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=Web Servers/Proxies
-  DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle
+  DEPENDS:=$(GO_ARCH_DEPENDS) +ca-bundle +xray-core-alt
+  CONFLICTS:=xray-core
   URL:=https://v2raya.org
 endef
 
