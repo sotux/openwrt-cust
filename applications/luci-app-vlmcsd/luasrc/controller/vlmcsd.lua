@@ -4,17 +4,17 @@ function index()
 	if not nixio.fs.access("/etc/config/vlmcsd") then
 		return
 	end
-	local e = entry({"admin", "services", "vlmcsd"},
-		alias("admin", "services", "vlmcsd", "general"),
-		_("vlmcsd"), 10)
-	e.dependent = true
-	e.acl_depends = { "luci-app-vlmcsd" }
+	local page
+	page = entry({"admin", "services", "vlmcsd"}, cbi("vlmcsd"), _("KMS Server"), 100)
+	page.i18n = "vlmcsd"
+	page.dependent = true
+	page.acl_depends = { "luci-app-vlmcsd" }
+	entry({"admin","services","vlmcsd","status"},call("act_status")).leaf=true
+end
 
-	entry({"admin", "services", "vlmcsd", "general"},
-		cbi("vlmcsd/general"),
-		_("General Settings"), 10).leaf = true
-
-	entry({"admin", "services", "vlmcsd", "config"},
-		form("vlmcsd/configfile"),
-		_("Config File"), 20).leaf = true
+function act_status()
+  local e={}
+  e.running=luci.sys.call("pgrep vlmcsd >/dev/null")==0
+  luci.http.prepare_content("application/json")
+  luci.http.write_json(e)
 end

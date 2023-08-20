@@ -1,6 +1,6 @@
 {
 	"luci-app-vlmcsd": {
-		"description": "Grant access to vlmcsd",
+		"description": "Grant UCI access for luci-app-vlmcsd",
 		"read": {
 			"uci": [ "vlmcsd" ]
 		},
