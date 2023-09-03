@@ -5,7 +5,7 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI support for v2rayA
-LUCI_DEPENDS:=+v2raya-alt +loyalsoldier-geoip +loyalsoldier-geosite
+LUCI_DEPENDS:=+v2raya-alt +luci-compat
 LUCI_PKGARCH:=all
 PKG_VERSION:=10
 
