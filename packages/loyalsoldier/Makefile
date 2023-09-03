@@ -39,7 +39,6 @@ define Package/loyalsoldier-geoip
   TITLE:=Loyalsoldier GeoIP List for xray/v2ray/daed
   VERSION:=$(GEOIP_VER)-$(PKG_RELEASE)
   LICENSE:=GPLv3
-  CONFLICTS:=v2ray-geoip
 endef
 
 define Package/loyalsoldier-geosite
@@ -47,7 +46,6 @@ define Package/loyalsoldier-geosite
   TITLE:=Loyalsoldier Geosite List for xray/v2ray/daed
   VERSION:=$(GEOSITE_VER)-$(PKG_RELEASE)
   LICENSE:=GPLv3
-  CONFLICTS:=v2ray-geosite
 endef
 
 define Build/Prepare
@@ -65,16 +63,16 @@ endef
 
 define Package/loyalsoldier-geoip/install
 	$(INSTALL_DIR) $(1)/usr/share/v2ray $(1)/usr/share/xray $(1)/usr/share/daed
-	$(INSTALL_DATA) $(DL_DIR)/$(GEOIP_FILE) $(1)/usr/share/v2ray/geoip.dat
-	$(LN) ../v2ray/geoip.dat $(1)/usr/share/xray/geoip.dat
-	$(LN) ../v2ray/geoip.dat $(1)/usr/share/daed/geoip.dat
+	$(INSTALL_DATA) $(DL_DIR)/$(GEOIP_FILE) $(1)/usr/share/v2ray/LoyalsoldierIP.dat
+	$(LN) ../v2ray/LoyalsoldierIP.dat $(1)/usr/share/xray/LoyalsoldierIP.dat
+	$(LN) ../v2ray/LoyalsoldierIP.dat $(1)/usr/share/daed/LoyalsoldierIP.dat
 endef
 
 define Package/loyalsoldier-geosite/install
 	$(INSTALL_DIR) $(1)/usr/share/v2ray $(1)/usr/share/xray $(1)/usr/share/daed
-	$(INSTALL_DATA) $(DL_DIR)/$(GEOSITE_FILE) $(1)/usr/share/v2ray/geosite.dat
-	$(LN) ../v2ray/geosite.dat $(1)/usr/share/xray/geosite.dat
-	$(LN) ../v2ray/geosite.dat $(1)/usr/share/daed/geosite.dat
+	$(INSTALL_DATA) $(DL_DIR)/$(GEOSITE_FILE) $(1)/usr/share/v2ray/LoyalsoldierSite.dat
+	$(LN) ../v2ray/LoyalsoldierSite.dat $(1)/usr/share/xray/LoyalsoldierSite.dat
+	$(LN) ../v2ray/LoyalsoldierSite.dat $(1)/usr/share/daed/LoyalsoldierSite.dat
 endef
 
 $(eval $(call BuildPackage,loyalsoldier-geoip))
