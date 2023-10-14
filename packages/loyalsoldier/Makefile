@@ -8,13 +8,13 @@ PKG_MAINTAINER:=sotux82 <sotux82@gmail.com>
 
 include $(INCLUDE_DIR)/package.mk
 
-GEOIP_VER:=202308112208
+GEOIP_VER:=202310132208
 GEOIP_FILE:=geoip.dat.$(GEOIP_VER)
 define Download/geoip
   URL:=https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$(GEOIP_VER)
   URL_FILE:=geoip.dat
   FILE:=$(GEOIP_FILE)
-  HASH:=bca879e08c2e6f717e3933e9e8f99cd1f5333b78eeb45c0d9b5cdbdec05c6673
+  HASH:=1c48163c41a7f1204f5aa2b33eae77b5f21bea7dad77de9a84032807202966fd
 endef
 
 GEOSITE_VER:=202308112208
@@ -23,7 +23,7 @@ define Download/geosite
   URL:=https://github.com/Loyalsoldier/v2ray-rules-dat/releases/download/$(GEOSITE_VER)/
   URL_FILE:=geosite.dat
   FILE:=$(GEOSITE_FILE)
-  HASH:=c8c7d9ecf059e1a72cfbe7b794ac6ab592fb4e9a3068b3191737b76340caafd4
+  HASH:=e5018655fa1cf3aa34cd2f96543f5685c548fc5330c3bd4428511b68314b8542
 endef
 
 define Package/loyalsoldier-geodata/template
