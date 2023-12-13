@@ -5,12 +5,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=naiveproxy
-PKG_VERSION:=116.0.5845.92-2
+PKG_VERSION:=120.0.6099.43-1
 PKG_RELEASE:=1
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/klzgrad/naiveproxy/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=1e027730e9abdb9cf02eb4e0b831072f437c66647a9df4389dbecd7364614592
+PKG_HASH:=b5344626f88b8b728116851d5a6f372e75557cbff878f9eda2f2fa7c2ae2e59f
 
 PKG_LICENSE:=BSD 3-Clause
 PKG_LICENSE_FILES:=LICENSE
@@ -39,7 +39,7 @@ define Package/naiveproxy
   SUBMENU:=Web Servers/Proxies
   TITLE:=Make a fortune quietly
   URL:=https://github.com/klzgrad/naiveproxy
-  DEPENDS:=@!(arc||mips||mips64||powerpc||TARGET_gemini) +libatomic
+  DEPENDS:=@!(arc||armeb||mips||mips64||powerpc||TARGET_gemini) +libatomic
 endef
 
 define Package/naiveproxy/description
@@ -55,22 +55,22 @@ ifneq ($(CONFIG_CCACHE),)
   export naive_ccache_flags=cc_wrapper="$(CCACHE)"
 endif
 
-CLANG_VER:=17-init-12166-g7586aeab-3
+CLANG_VER:=18-init-9505-g10664813-1
 CLANG_FILE:=clang-llvmorg-$(CLANG_VER).tgz
 define Download/CLANG
 	URL:=https://commondatastorage.googleapis.com/chromium-browser-clang/Linux_x64
 	URL_FILE:=$(CLANG_FILE)
 	FILE:=$(CLANG_FILE)
-	HASH:=a3c744bef3e76c985b51f55f2c864f9bd10ac777b88a65a31d6cd85b6dda816b
+	HASH:=4385259d1f5a1c932a252cee70b5a9244f7a6de3f13aed4197056ef9151ad50c
 endef
 
-PGO_VER:=5845-1691722785-bee99d0dc25d78f4193491ad30759d668e3c9311
+PGO_VER:=6099-1701163313-b23d7b20bc0e6506140a32e766fa675f7dc261e2
 PGO_FILE:=chrome-linux-$(PGO_VER).profdata
 define Download/PGO_PROF
 	URL:=https://storage.googleapis.com/chromium-optimization-profiles/pgo_profiles
 	URL_FILE:=$(PGO_FILE)
 	FILE:=$(PGO_FILE)
-	HASH:=e6693bb2d9257a1c0d56c8bbd7713387a47e8d0bea44a5946699ffb393911cb4
+	HASH:=0f6a5220f4022429e41cce213c7895e0adf838e5e491fad088e7cd295d37810a
 endef
 
 define Build/Prepare
