@@ -43,7 +43,7 @@ define Package/vlmcsd/install
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/bin/vlmcsd $(1)/usr/bin/vlmcsd
 
 	$(INSTALL_DIR) $(1)/etc
-	$(INSTALL_BIN) ./files/vlmcsd.ini $(1)/etc/vlmcsd.ini
+	$(INSTALL_CONF) ./files/vlmcsd.ini $(1)/etc/vlmcsd.ini
 	#$(INSTALL_DIR) $(1)/etc/init.d
 	#$(INSTALL_BIN) ./files/vlmcsd.init $(1)/etc/init.d/vlmcsd
 endef
