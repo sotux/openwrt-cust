@@ -9,11 +9,11 @@ msgstr ""
 msgid "<b><font color=red>Vlmcsd is not running.</font></b>"
 msgstr ""
 
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:65
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:66
 msgid "Active Windows/Office automatically"
 msgstr ""
 
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:64
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:65
 msgid "Auto activate"
 msgstr ""
 
@@ -34,11 +34,11 @@ msgstr ""
 msgid "Config File"
 msgstr ""
 
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:59
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:60
 msgid "Enable"
 msgstr ""
 
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:60
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:61
 msgid "Enable vlmcsd service"
 msgstr ""
 
@@ -58,19 +58,13 @@ msgstr ""
 msgid "Unable to save changes: %s"
 msgstr ""
 
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:52
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:58
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/file.js:13
+#: luci-app-vlmcsd/root/usr/share/luci/menu.d/luci-app-vlmcsd.json:3
 msgid "Vlmcsd"
 msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/file.js:13
 msgid "configfile"
-msgstr ""
-
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:52
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:58
-msgid "vlmcsd"
-msgstr ""
-
-#: luci-app-vlmcsd/root/usr/share/luci/menu.d/luci-app-vlmcsd.json:3
-msgid "vlmcsd config"
 msgstr ""

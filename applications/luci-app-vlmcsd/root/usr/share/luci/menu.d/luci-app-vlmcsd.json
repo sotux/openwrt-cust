@@ -1,6 +1,6 @@
 {
   "admin/services/vlmcsd": {
-    "title": "vlmcsd config",
+    "title": "Vlmcsd",
     "order": 60,
     "action": {
       "type": "firstchild"

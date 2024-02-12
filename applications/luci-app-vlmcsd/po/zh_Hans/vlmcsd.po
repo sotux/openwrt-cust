@@ -14,11 +14,11 @@ msgstr "<b><font color=green>Vlmcsd 运行中</font></b>"
 msgid "<b><font color=red>Vlmcsd is not running.</font></b>"
 msgstr "<b><font color=red>Vlmcsd 未运行</font></b>"
 
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:65
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:66
 msgid "Active Windows/Office automatically"
 msgstr "自动激活 Windows/Office"
 
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:64
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:65
 msgid "Auto activate"
 msgstr "自动激活"
 
@@ -39,11 +39,11 @@ msgstr "正在收集数据..."
 msgid "Config File"
 msgstr "配置文件"
 
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:59
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:60
 msgid "Enable"
 msgstr "启用"
 
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:60
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:61
 msgid "Enable vlmcsd service"
 msgstr "启用 vlmcsd 服务"
 
@@ -57,25 +57,19 @@ msgstr "运行状态"
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/file.js:14
 msgid "This file is /etc/vlmcsd.ini."
-msgstr "这个文件在 /etc/vlmcsd.ini 下，可以增加新的产品主密钥。"
+msgstr "这个文件是 /etc/vlmcsd.ini"
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/file.js:33
 msgid "Unable to save changes: %s"
 msgstr "无法保存变更：%s"
 
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:52
+#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:58
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/file.js:13
+#: luci-app-vlmcsd/root/usr/share/luci/menu.d/luci-app-vlmcsd.json:3
 msgid "Vlmcsd"
 msgstr "Vlmcsd"
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/file.js:13
 msgid "configfile"
 msgstr "配置文件"
-
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:52
-#: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:58
-msgid "vlmcsd"
-msgstr "vlmcsd"
-
-#: luci-app-vlmcsd/root/usr/share/luci/menu.d/luci-app-vlmcsd.json:3
-msgid "vlmcsd config"
-msgstr "KMS 服务器设置"

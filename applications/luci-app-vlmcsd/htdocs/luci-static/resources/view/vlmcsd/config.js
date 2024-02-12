@@ -24,7 +24,7 @@ var CBIVlmcsdStatus = form.DummyValue.extend({
 		var node = E('div', {}, E('p', {}, E('em', {}, _('Collecting data...'))));
 		poll.add(function() {
 			return Promise.all([
-				callServiceList('kms', extra)
+				callServiceList('vlmcsd', extra)
 				.then(function(res) {
 					return E('p', {}, E('em', {}, res.running
 						? _('<b><font color=green>Vlmcsd is running.</font></b>')
@@ -49,13 +49,14 @@ return view.extend({
 		m = new form.Map('vlmcsd', _('Basic Setting'));
 
 		s = m.section(form.TypedSection);
-		s.title = '%s - %s'.format(_('vlmcsd'), _('Running Status'));
+		s.title = '%s - %s'.format(_('Vlmcsd'), _('Running Status'));
 		s.anonymous = true;
 		s.cfgsections = function() { return [ 'status' ] };
 
 		s.option(CBIVlmcsdStatus);
 
-		s = m.section(form.TypedSection, 'vlmcsd', _('vlmcsd'));
+		s = m.section(form.TypedSection, 'vlmcsd', _('Vlmcsd'));
+		s.anonymous = true;
 		o = s.option(form.Flag, 'enabled', _('Enable'),
 			_('Enable vlmcsd service'));
 		o.default = '0';
