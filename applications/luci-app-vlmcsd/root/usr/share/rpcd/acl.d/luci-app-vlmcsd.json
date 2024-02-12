@@ -1,10 +1,19 @@
 {
 	"luci-app-vlmcsd": {
-		"description": "Grant UCI access for luci-app-vlmcsd",
+		"description": "Grant UCI and RPC access to LuCI app vlmcsd",
 		"read": {
+			"ubus": {
+				"service": [ "list" ]
+			},
+			"file": {
+				"/etc/vlmcsd.ini": [ "read" ]
+			},
 			"uci": [ "vlmcsd" ]
 		},
 		"write": {
+			"file": {
+				"/etc/vlmcsd.ini": [ "write" ]
+			},
 			"uci": [ "vlmcsd" ]
 		}
 	}
