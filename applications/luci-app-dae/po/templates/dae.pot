@@ -1,0 +1,67 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:30
+msgid "<b><font color=green>Dae is running.</font></b>"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:31
+msgid "<b><font color=red>Dae is not running.</font></b>"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:49
+#: luci-app-dae/root/usr/share/luci/menu.d/luci-app-dae.json:15
+msgid "Basic Setting"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:31
+msgid "Changes have been saved."
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:24
+msgid "Collecting data..."
+msgstr ""
+
+#: luci-app-dae/root/usr/share/luci/menu.d/luci-app-dae.json:23
+msgid "Config File"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:65
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:13
+msgid "Config file"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:52
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:58
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:13
+#: luci-app-dae/root/usr/share/luci/menu.d/luci-app-dae.json:3
+msgid "Dae"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:66
+msgid "Dae config file"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:60
+msgid "Enable"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:61
+msgid "Enable dae service"
+msgstr ""
+
+#: luci-app-dae/root/usr/share/rpcd/acl.d/luci-app-dae.json:3
+msgid "Grant UCI and RPC access to LuCI app dae"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:52
+msgid "Running Status"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:14
+msgid "This file is /etc/dae/config.dae."
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:33
+msgid "Unable to save changes: %s"
+msgstr ""

@@ -1,0 +1,30 @@
+{
+	"admin/vpn/dae": {
+		"title": "Dae",
+		"order": 60,
+		"action": {
+			"type": "firstchild"
+		},
+		"depends": {
+			"acl": [
+				"luci-app-dae"
+			]
+		}
+	},
+	"admin/vpn/dae/config": {
+		"title": "Basic Setting",
+		"order": 1,
+		"action": {
+			"type": "view",
+			"path": "dae/config"
+		}
+	},
+	"admin/vpn/dae/file": {
+		"title": "Config File",
+		"order": 2,
+		"action": {
+			"type": "view",
+			"path": "dae/file"
+		}
+	}
+}

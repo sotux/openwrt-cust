@@ -1,0 +1,20 @@
+{
+	"luci-app-dae": {
+		"description": "Grant UCI and RPC access to LuCI app dae",
+		"read": {
+			"ubus": {
+				"service": [ "list" ]
+			},
+			"file": {
+				"/etc/dae/config.dae": [ "read" ]
+			},
+			"uci": [ "dae" ]
+		},
+		"write": {
+			"file": {
+				"/etc/dae/config.dae": [ "write" ]
+			},
+			"uci": [ "dae" ]
+		}
+	}
+}
