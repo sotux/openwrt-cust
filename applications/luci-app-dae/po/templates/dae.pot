@@ -42,6 +42,14 @@ msgstr ""
 msgid "Dae config file"
 msgstr ""
 
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:72
+msgid "Dae log max backups"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:77
+msgid "Dae log max size"
+msgstr ""
+
 #: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:60
 msgid "Enable"
 msgstr ""
@@ -52,6 +60,14 @@ msgstr ""
 
 #: luci-app-dae/root/usr/share/rpcd/acl.d/luci-app-dae.json:3
 msgid "Grant UCI and RPC access to LuCI app dae"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:71
+msgid "Log max backups"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:76
+msgid "Log max size(MB)"
 msgstr ""
 
 #: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:52
