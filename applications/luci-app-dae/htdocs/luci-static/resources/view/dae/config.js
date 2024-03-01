@@ -70,13 +70,15 @@ return view.extend({
 
 		o = s.option(form.Value, 'log_maxbackups', _('Log max backups'),
 			_('Dae log max backups'));
-		o.default = '1';
+		o.default = 1;
 		o.rmempty = false;
+		o.datatype = 'uinteger';
 
 		o = s.option(form.Value, 'log_maxsize', _('Log max size(MB)'),
 			_('Dae log max size'));
-		o.default = '1';
+		o.default = 1;
 		o.rmempty = false;
+		o.datatype = 'uinteger';
 
 		return m.render();
 	},
