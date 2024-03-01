@@ -68,6 +68,16 @@ return view.extend({
 		o.readonly = true;
 		o.rmempty = false;
 
+		o = s.option(form.Value, 'log_maxbackups', _('Log max backups'),
+			_('Dae log max backups'));
+		o.default = '1';
+		o.rmempty = false;
+
+		o = s.option(form.Value, 'log_maxsize', _('Log max size(MB)'),
+			_('Dae log max size'));
+		o.default = '1';
+		o.rmempty = false;
+
 		return m.render();
 	},
 });
