@@ -26,5 +26,13 @@
 			"type": "view",
 			"path": "dae/file"
 		}
+	},
+	"admin/vpn/dae/log": {
+		"title": "Log",
+		"order": 2,
+		"action": {
+			"type": "view",
+			"path": "dae/log"
+		}
 	}
 }

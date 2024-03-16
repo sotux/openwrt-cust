@@ -6,7 +6,8 @@
 				"service": [ "list" ]
 			},
 			"file": {
-				"/etc/dae/config.dae": [ "read" ]
+				"/etc/dae/config.dae": [ "read" ],
+				"/var/log/dae.log": [ "read" ]
 			},
 			"uci": [ "dae" ]
 		},

@@ -62,11 +62,10 @@ return view.extend({
 		o.default = '0';
 		o.rmempty = false;
 
-		o = s.option(form.Value, 'config_file', _('Config file'),
-			_('Dae config file'));
-		o.default = '/etc/dae/config.dae';
-		o.readonly = true;
-		o.rmempty = false;
+		o = s.option(form.ListValue, 'geodb', _('Geo DB'));
+		o.value('loyalsoldier', _('Loyalsoldier'));
+		o.value('v2fly', _('V2fly'));
+		o.default = 'loyalsoldier';
 
 		o = s.option(form.Value, 'log_maxbackups', _('Log max backups'),
 			_('Dae log max backups'));
