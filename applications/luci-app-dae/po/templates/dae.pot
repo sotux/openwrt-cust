@@ -1,15 +1,15 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:30
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:31
 msgid "<b><font color=green>Dae is running.</font></b>"
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:31
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:32
 msgid "<b><font color=red>Dae is not running.</font></b>"
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:49
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:50
 #: luci-app-dae/root/usr/share/luci/menu.d/luci-app-dae.json:15
 msgid "Basic Setting"
 msgstr ""
@@ -18,7 +18,8 @@ msgstr ""
 msgid "Changes have been saved."
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:24
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:25
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:32
 msgid "Collecting data..."
 msgstr ""
 
@@ -26,51 +27,74 @@ msgstr ""
 msgid "Config File"
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:65
 #: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:13
 msgid "Config file"
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:52
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:58
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:53
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:59
 #: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:13
 #: luci-app-dae/root/usr/share/luci/menu.d/luci-app-dae.json:3
 msgid "Dae"
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:66
-msgid "Dae config file"
-msgstr ""
-
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:72
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:93
 msgid "Dae log max backups"
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:77
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:99
 msgid "Dae log max size"
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:60
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:61
 msgid "Enable"
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:61
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:62
 msgid "Enable dae service"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:66
+msgid "Geo DB"
 msgstr ""
 
 #: luci-app-dae/root/usr/share/rpcd/acl.d/luci-app-dae.json:3
 msgid "Grant UCI and RPC access to LuCI app dae"
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:71
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:30
+msgid "Loading..."
+msgstr ""
+
+#: luci-app-dae/root/usr/share/luci/menu.d/luci-app-dae.json:31
+msgid "Log"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:51
+msgid "Log file does not exist."
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:41
+msgid "Log is clean."
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:92
 msgid "Log max backups"
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:76
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:98
 msgid "Log max size(MB)"
 msgstr ""
 
-#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:52
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:67
+msgid "Loyalsoldier"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:68
+msgid "Refresh every %d seconds."
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:53
 msgid "Running Status"
 msgstr ""
 
@@ -80,4 +104,32 @@ msgstr ""
 
 #: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:33
 msgid "Unable to save changes: %s"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:55
+msgid "Unknown error: %s"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:73
+msgid "Update"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:71
+msgid "Update Geo DB"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:72
+msgid "Update Geo DB immediately"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:83
+msgid "Update failed"
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:78
+msgid "Updating..."
+msgstr ""
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:68
+msgid "V2fly"
 msgstr ""
