@@ -28,24 +28,24 @@ GeoDB=$(uci get dae.config.geodb)
 
 if [ "$GeoDB" = "loyalsoldier" ]; then
     # Download the GeoIP database from Loyalsoldier and check the result
-    wget -O /tmp/geoip.dat https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat
+    wget -q --show-progress -O /tmp/geoip.dat https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geoip.dat
     if [ $? -ne 0 ]; then
         echo "Failed to download the GeoIP database from Loyalsoldier"
         exit 1
     fi
-    wget -O /tmp/geosite.dat https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat
+    wget -q --show-progress -O /tmp/geosite.dat https://cdn.jsdelivr.net/gh/Loyalsoldier/v2ray-rules-dat@release/geosite.dat
     if [ $? -ne 0 ]; then
         echo "Failed to download the GeoSite database from Loyalsoldier"
         exit 1
     fi
 elif [ "$GeoDB" = "v2fly" ]; then
     # Download the GeoIP database from v2fly and check the result
-    wget -O /tmp/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat
+    wget -q --show-progress -O /tmp/geoip.dat https://github.com/v2fly/geoip/releases/latest/download/geoip.dat
     if [ $? -ne 0 ]; then
         echo "Failed to download the GeoIP database from v2fly"
         exit 1
     fi
-    wget -O /tmp/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
+    wget -q --show-progress -O /tmp/geosite.dat https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat
     if [ $? -ne 0 ]; then
         echo "Failed to download the Domain List Community database from v2fly"
         exit 1

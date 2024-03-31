@@ -4,24 +4,25 @@
 'require rpc';
 'require poll';
 'require dom';
+'require fs';
 
-var callServiceList = rpc.declare({
+let callServiceList = rpc.declare({
 	object: 'service',
 	method: 'list',
 	params: [ 'name' ],
 	expect: { '': {} },
 	filter: function (data, args, extra) {
-		var i, res = data[args.name] || {};
+		let i, res = data[args.name] || {};
 		for (i = 0; (i < extra.length) && (Object.keys(res).length > 0); ++i)
 			res = res[extra[i]] || {};
 		return res;
 	}
 });
 
-var CBIVlmcsdStatus = form.DummyValue.extend({
+let CBIVlmcsdStatus = form.DummyValue.extend({
 	renderWidget: function() {
-		var extra = ['instances', 'dae'];
-		var node = E('div', {}, E('p', {}, E('em', {}, _('Collecting data...'))));
+		let extra = ['instances', 'dae'];
+		let node = E('div', {}, E('p', {}, E('em', {}, _('Collecting data...'))));
 		poll.add(function() {
 			return Promise.all([
 				callServiceList('dae', extra)
@@ -44,7 +45,7 @@ var CBIVlmcsdStatus = form.DummyValue.extend({
 // Project code format is tabs, not spaces
 return view.extend({
 	render: function() {
-		var m, s, o;
+		let m, s, o;
 
 		m = new form.Map('dae', _('Basic Setting'));
 
@@ -66,6 +67,27 @@ return view.extend({
 		o.value('loyalsoldier', _('Loyalsoldier'));
 		o.value('v2fly', _('V2fly'));
 		o.default = 'loyalsoldier';
+
+		o = s.option(form.Button, '_panel', _('Update Geo DB'),
+			_('Update Geo DB immediately'));
+		o.inputtitle = _('Update');
+		o.inputstyle = 'apply';
+		o.onclick = function () {
+			// Disable the button while the update is in progress
+			o.disabled = true;
+			o.textContent = _('Updating...');
+			// Start the update
+			return fs.exec('/usr/bin/update_geodb.sh').then(function (res) {
+				// Parse the output and update the button text
+				if (res.code !== 0) {
+					o.textContent = _('Update failed');
+					throw new Error(res.stderr);
+				}
+
+				// Enable the button when the update is complete
+				o.disabled = false;
+			});
+		}
 
 		o = s.option(form.Value, 'log_maxbackups', _('Log max backups'),
 			_('Dae log max backups'));

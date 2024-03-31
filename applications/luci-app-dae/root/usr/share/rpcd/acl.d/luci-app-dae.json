@@ -7,7 +7,8 @@
 			},
 			"file": {
 				"/etc/dae/config.dae": [ "read" ],
-				"/var/log/dae.log": [ "read" ]
+				"/var/log/dae.log": [ "read" ],
+				"/usr/bin/update_geodb.sh": [ "exec" ]
 			},
 			"uci": [ "dae" ]
 		},
