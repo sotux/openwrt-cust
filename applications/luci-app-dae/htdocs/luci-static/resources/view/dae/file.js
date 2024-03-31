@@ -24,7 +24,7 @@ return view.extend({
 	},
 
 	handleSave: function(ev) {
-		var value = ((document.querySelector('textarea').value || '').replace(/\r\n/g, '\n')) + '\n';
+		let value = ((document.querySelector('textarea').value || '').replace(/\r\n/g, '\n'));
 		return fs.write('/etc/dae/config.dae', value)
 			.then(function(rc) {
 				document.querySelector('textarea').value = value;
