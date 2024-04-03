@@ -55,9 +55,19 @@ else
     exit 1
 fi
 
-# Move the downloaded database to the correct location
-mv /tmp/geoip.dat /usr/share/dae/geoip.dat
-mv /tmp/geosite.dat /usr/share/dae/geosite.dat
+# Move the downloaded database to the correct location.
+# if geoip.dat and geosite.dat are symlinks, move the
+# new database to the target of the symlink.
+if [ -L /usr/share/dae/geoip.dat ]; then
+    mv /tmp/geoip.dat $(readlink -f /usr/share/dae/geoip.dat)
+else
+    mv /tmp/geoip.dat /usr/share/dae/geoip.dat
+fi
+if [ -L /usr/share/dae/geosite.dat ]; then
+    mv /tmp/geosite.dat $(readlink -f /usr/share/dae/geosite.dat)
+else
+    mv /tmp/geosite.dat /usr/share/dae/geosite.dat
+fi
 
 # Restart dae service to apply the new database
 /etc/init.d/dae restart
