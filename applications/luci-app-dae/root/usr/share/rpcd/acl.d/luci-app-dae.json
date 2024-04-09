@@ -1,0 +1,22 @@
+{
+	"luci-app-dae": {
+		"description": "Grant UCI and RPC access to LuCI app dae",
+		"read": {
+			"ubus": {
+				"service": [ "list" ]
+			},
+			"file": {
+				"/etc/dae/config.dae": [ "read" ],
+				"/var/log/dae.log": [ "read" ],
+				"/usr/bin/update_geodb.sh": [ "exec" ]
+			},
+			"uci": [ "dae" ]
+		},
+		"write": {
+			"file": {
+				"/etc/dae/config.dae": [ "write" ]
+			},
+			"uci": [ "dae" ]
+		}
+	}
+}

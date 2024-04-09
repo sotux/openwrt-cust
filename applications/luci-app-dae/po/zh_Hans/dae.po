@@ -1,0 +1,135 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8\n"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:31
+msgid "<b><font color=green>Dae is running.</font></b>"
+msgstr "<b><font color=green>Dae 运行中</font></b>"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:32
+msgid "<b><font color=red>Dae is not running.</font></b>"
+msgstr "<b><font color=red>Dae 未运行</font></b>"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:50
+#: luci-app-dae/root/usr/share/luci/menu.d/luci-app-dae.json:15
+msgid "Basic Setting"
+msgstr "基本设置"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:31
+msgid "Changes have been saved."
+msgstr "变更已保存。"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:25
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:32
+msgid "Collecting data..."
+msgstr "正在收集数据..."
+
+#: luci-app-dae/root/usr/share/luci/menu.d/luci-app-dae.json:23
+msgid "Config File"
+msgstr "配置文件"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:13
+msgid "Config file"
+msgstr "配置文件"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:53
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:59
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:13
+#: luci-app-dae/root/usr/share/luci/menu.d/luci-app-dae.json:3
+msgid "Dae"
+msgstr "Dae"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:93
+msgid "Dae log max backups"
+msgstr "Dae 日志最大备份数"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:99
+msgid "Dae log max size"
+msgstr "Dae 日志最大大小"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:61
+msgid "Enable"
+msgstr "启用"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:62
+msgid "Enable dae service"
+msgstr "启用 Dae 服务"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:66
+msgid "Geo DB"
+msgstr "Geo 数据库"
+
+#: luci-app-dae/root/usr/share/rpcd/acl.d/luci-app-dae.json:3
+msgid "Grant UCI and RPC access to LuCI app dae"
+msgstr "授权 UCI 和 RPC 访问 Luci 程序 dae"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:30
+msgid "Loading..."
+msgstr "载入中..."
+
+#: luci-app-dae/root/usr/share/luci/menu.d/luci-app-dae.json:31
+msgid "Log"
+msgstr "日志"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:51
+msgid "Log file does not exist."
+msgstr "日志文件不存在。"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:41
+msgid "Log is clean."
+msgstr "日志为空。"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:92
+msgid "Log max backups"
+msgstr "日志最大备份数"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:98
+msgid "Log max size(MB)"
+msgstr "日志最大大小（MB）"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:67
+msgid "Loyalsoldier"
+msgstr "Loyalsoldier"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:68
+msgid "Refresh every %d seconds."
+msgstr "每 %d 秒刷新一次。"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:53
+msgid "Running Status"
+msgstr "运行状态"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:14
+msgid "This file is /etc/dae/config.dae."
+msgstr "这个文件是 /etc/dae/config.dae"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/file.js:33
+msgid "Unable to save changes: %s"
+msgstr "无法保存变更：%s"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/log.js:55
+msgid "Unknown error: %s"
+msgstr "未知错误：%s"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:73
+msgid "Update"
+msgstr "更新"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:71
+msgid "Update Geo DB"
+msgstr "更新 Geo 数据库"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:72
+msgid "Update Geo DB immediately"
+msgstr "立即更新 Geo 数据库"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:83
+msgid "Update failed"
+msgstr "更新失败"
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:78
+msgid "Updating..."
+msgstr "更新中..."
+
+#: luci-app-dae/htdocs/luci-static/resources/view/dae/config.js:68
+msgid "V2fly"
+msgstr "V2fly"

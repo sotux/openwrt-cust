@@ -1,0 +1,10 @@
+#!/bin/sh
+
+[ "$(uci -q get vlmcsd.config.enabled)" = "1" ] && exit 0
+
+touch /etc/config/vlmcsd
+uci set vlmcsd.config.enabled=0
+uci set vlmcsd.config.autoactivate=0
+uci commit
+
+return 0

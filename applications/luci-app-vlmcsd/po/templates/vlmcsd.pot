@@ -1,75 +1,70 @@
 msgid ""
-msgstr ""
-"Language: zh_Hans\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+msgstr "Content-Type: text/plain; charset=UTF-8"
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:30
 msgid "<b><font color=green>Vlmcsd is running.</font></b>"
-msgstr "<b><font color=green>Vlmcsd 运行中</font></b>"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:31
 msgid "<b><font color=red>Vlmcsd is not running.</font></b>"
-msgstr "<b><font color=red>Vlmcsd 未运行</font></b>"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:66
 msgid "Active Windows/Office automatically"
-msgstr "自动激活 Windows/Office"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:65
 msgid "Auto activate"
-msgstr "自动激活"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:49
 #: luci-app-vlmcsd/root/usr/share/luci/menu.d/luci-app-vlmcsd.json:14
 msgid "Basic Setting"
-msgstr "基本设置"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/file.js:31
 msgid "Changes have been saved."
-msgstr "变更已保存。"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:24
 msgid "Collecting data..."
-msgstr "正在收集数据..."
+msgstr ""
 
 #: luci-app-vlmcsd/root/usr/share/luci/menu.d/luci-app-vlmcsd.json:23
 msgid "Config File"
-msgstr "配置文件"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:60
 msgid "Enable"
-msgstr "启用"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:61
 msgid "Enable vlmcsd service"
-msgstr "启用 vlmcsd 服务"
+msgstr ""
 
 #: luci-app-vlmcsd/root/usr/share/rpcd/acl.d/luci-app-vlmcsd.json:3
 msgid "Grant UCI and RPC access to LuCI app vlmcsd"
-msgstr "授权 UCI 和 RPC 访问 Luci 程序 vlmcsd"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:52
 msgid "Running Status"
-msgstr "运行状态"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/file.js:14
 msgid "This file is /etc/vlmcsd.ini."
-msgstr "这个文件是 /etc/vlmcsd.ini"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/file.js:33
 msgid "Unable to save changes: %s"
-msgstr "无法保存变更：%s"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:52
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/config.js:58
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/file.js:13
 #: luci-app-vlmcsd/root/usr/share/luci/menu.d/luci-app-vlmcsd.json:3
 msgid "Vlmcsd"
-msgstr "Vlmcsd"
+msgstr ""
 
 #: luci-app-vlmcsd/htdocs/luci-static/resources/view/vlmcsd/file.js:13
 msgid "configfile"
-msgstr "配置文件"
+msgstr ""
