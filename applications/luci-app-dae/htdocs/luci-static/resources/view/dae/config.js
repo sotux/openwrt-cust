@@ -19,7 +19,7 @@ let callServiceList = rpc.declare({
 	}
 });
 
-let CBIVlmcsdStatus = form.DummyValue.extend({
+let CBIStatus = form.DummyValue.extend({
 	renderWidget: function() {
 		let extra = ['instances', 'dae'];
 		let node = E('div', {}, E('p', {}, E('em', {}, _('Collecting data...'))));
@@ -54,7 +54,7 @@ return view.extend({
 		s.anonymous = true;
 		s.cfgsections = function() { return [ 'status' ] };
 
-		s.option(CBIVlmcsdStatus);
+		s.option(CBIStatus);
 
 		s = m.section(form.TypedSection, 'dae', _('Dae'));
 		s.anonymous = true;
