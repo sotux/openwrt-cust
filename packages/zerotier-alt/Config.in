@@ -1,0 +1,14 @@
+menu "Configuration"
+	depends on PACKAGE_zerotier-alt
+
+config ZEROTIER_ENABLE_DEBUG
+	bool "Build in debug mode"
+	depends on PACKAGE_zerotier-alt
+	default n
+
+config ZEROTIER_ENABLE_SELFTEST
+	bool "Build a self test program"
+	depends on PACKAGE_zerotier-alt
+	default n
+
+endmenu
