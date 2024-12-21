@@ -25,11 +25,7 @@ return view.extend({
 			}`;
 
 		let log_textarea = E('div', { 'id': 'log_textarea' },
-			E('img', {
-				'src': L.resource(['icons/loading.gif']),
-				'alt': _('Loading...'),
-				'style': 'vertical-align:middle'
-			}, _('Collecting data...'))
+			_('Collecting data...')
 		);
 
 		let log_path = '/var/log/dae.log';
