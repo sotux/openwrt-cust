@@ -18,7 +18,7 @@ return view.extend({
 				margin: 0;
 				overflow: auto;
 				white-space: pre;
-				height: 500px;
+				height: 600px;
 			}
 			.description {
 				background-color: #33ccff;
