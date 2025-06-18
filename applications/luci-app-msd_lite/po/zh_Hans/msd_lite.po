@@ -90,7 +90,7 @@ msgid ""
 "The lightweight version of Multi Stream daemon (msd) Program for organizing "
 "IP TV streaming on the network via HTTP."
 msgstr ""
-"Multi Stream daemon (msd) 程序的轻量级版本，用于通过 HTTP 管理网络上的 IP TV "
+"Multi Stream daemon (msd) 程序的轻量级版本，用于通过 HTTP 管理网络上的 IPTV "
 "流。"
 
 #: applications/luci-app-msd_lite/htdocs/luci-static/resources/view/msd_lite.js:33
